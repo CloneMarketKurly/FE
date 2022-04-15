@@ -10,7 +10,7 @@ import Card from '../components/Card';
 const Main = () => {
   return (
     <React.Fragment>
-      <Header/>
+      {/* <Header/> */}
       <Slide/>
       <Card/>
       <MiddleBanner/>

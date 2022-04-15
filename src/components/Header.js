@@ -2,8 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { Grid, Button, Text } from '../elements/Index';
 import { BsList, BsCart2, BsHeart, BsGeoAlt, BsSearch } from 'react-icons/bs'
+import { useHistory } from 'react-router-dom';
 
 const Header = () => {
+  const history = useHistory();
   return (
     <React.Fragment>
       <Grid width="auto" is_flex>
@@ -14,14 +16,22 @@ const Header = () => {
               <Text color="black">배송안내 ></Text>
             </TextSt>
             <TextSt>
-              <Text color="purple">회원가입 |</Text>
-              <Text color="black">&nbsp;로그인 |</Text>
+              <Text
+                onClick={()=> {
+                  history.push("/signup")
+                }}
+                color="purple">회원가입 |</Text>
+              <Text
+               onClick={()=> {
+                history.push("/login")
+              }}
+                color="black">&nbsp;로그인 |</Text>
               <Text color="black">&nbsp;고객센터▼</Text>
             </TextSt>
           </BodySt>
           <ImgSt>
             <div>
-              <img src='/img/kurly.png'/>
+              <img onClick={() => {history.push("/")}} src='/img/kurly.png'/>
             </div>
           </ImgSt>
           <BottomSt>
@@ -43,6 +53,7 @@ const Header = () => {
           </BottomSt>
         </HeaderSt>
       </Grid>
+      <Grid margin="50px"/>
     </React.Fragment>
   )
 }

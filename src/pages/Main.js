@@ -10,14 +10,10 @@ import Card from '../components/Card';
 const Main = () => {
   return (
     <React.Fragment>
-      {/* <Header/> */}
       <Slide/>
       <Card/>
       <MiddleBanner/>
       <Div/>
-      <BottomBanner/>
-      <Div/>
-      <Footer/>
     </React.Fragment>
   )
 }

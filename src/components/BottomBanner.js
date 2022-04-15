@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from "styled-components";
 
-const MiddleBanner = (props) => {
+const BottomBanner = (props) => {
   return (
     <React.Fragment>
       <Wrap>
         <A >
-         <img src="https://img-cf.kurly.com/banner/random-band/pc/img/ebd3f62c-60f2-4d2f-8f45-1ba47f9985eb"/>
+         <img src="https://img-cf.kurly.com/banner/random-band/pc/img/8ded70f9-bca2-4a70-b290-beb571ff82ab"/>
         </A>
       </Wrap>
     </React.Fragment>
@@ -35,5 +35,4 @@ const A = styled.div`
     }
 `
 
-
-export default MiddleBanner;
+export default BottomBanner;

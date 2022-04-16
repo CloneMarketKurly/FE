@@ -19,7 +19,7 @@ const BottomBanner = (props) => {
 
 const Wrap = styled.div`
   width: 1050px;
-  margin: 0px auto;
+  margin: 60px auto;
 `
 const A = styled.div`
   position: relative;

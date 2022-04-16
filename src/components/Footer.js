@@ -26,7 +26,6 @@ const Footer = () => {
               <div>
                 <button>대량주문 문의</button>
                 <span style={{fontSize: "15px", marginLeft: "10px", color: "gray"}}>비회원일 경우 메일로 문의 바랍니다.</span>
-
               </div>
             </ButtonDiv>
           </WrapSt>

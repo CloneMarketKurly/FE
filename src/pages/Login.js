@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { Text, Input, Grid } from "../elements/Index";
+import { useHistory } from "react-router-dom";
 
 const Login = () => {
+  const history = useHistory();
   return (
     <React.Fragment>
       <LoginWrap>
@@ -16,28 +18,30 @@ const Login = () => {
           로그인
         </Text>
 
-        <LoginInput />
-        <LoginInput />
-        <Grid></Grid>
+        <LoginInput placeholder="아이디를 입력해주세요" />
+        <LoginInput placeholder="비밀번호를 입력해주세요" />
         <div
           style={{
-            width: "27%",
+            width: "40%",
             margin: "10px auto",
             display: "flex",
             justifyContent: "space-between",
+            height: "20px",
           }}
         >
-          <Check type="checkbox" />
-          <div
-            style={{
-              color: "#4f4f4f",
-              size: "13px",
-              margin: "0 0 0px 6px",
-              fontSize: "14px",
-              display: "contents",
-            }}
-          >
-            보안접속
+          <div>
+            <Check type="checkbox" />
+            <div
+              style={{
+                color: "#4f4f4f",
+                size: "13px",
+                margin: "0 0 0px 6px",
+                fontSize: "14px",
+                display: "contents",
+              }}
+            >
+              보안접속
+            </div>
           </div>
 
           <div
@@ -52,6 +56,7 @@ const Login = () => {
             아이디 찾기 | 비밀번호 찾기
           </div>
         </div>
+
         <ButtonLogin>
           <Text color="#ffffff" size="16.5px" margin="1px 0 0 0">
             로그인
@@ -74,8 +79,6 @@ const LoginWrap = styled.div`
   text-align: center;
 `;
 
-const CheckWrap = styled.div``;
-
 const Check = styled.input`
   width: 10px;
   height: 12px;
@@ -91,11 +94,8 @@ const LoginInput = styled.input`
   height: 54px;
   border-radius: 3px;
   border: 1px solid #5f0081;
-  /* background-color: #5f0080; */
   cursor: pointer;
   display: block;
-  /* overflow: hidden; */
-  /* text-align: center; */
 `;
 
 const ButtonLogin = styled.button`

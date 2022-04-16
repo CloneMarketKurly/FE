@@ -19,7 +19,7 @@ const Signup = () => {
               아이디<CheckSpan>*</CheckSpan>
             </td>
 
-            <div style={{ display: "flex" }}>
+            <td style={{ display: "flex" }}>
               <input
                 placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"
                 style={{
@@ -47,8 +47,7 @@ const Signup = () => {
               >
                 중복확인
               </button>
-            </div>
-
+            </td>
             <InfoUl className="checkId">
               <li>• 6자 이상의 영문 혹은 영문과 숫자를 조합</li>
               <li>• 아이디 중복확인</li>
@@ -60,59 +59,55 @@ const Signup = () => {
               비밀번호<CheckSpan>*</CheckSpan>
             </td>
 
-            <td>
-              <div style={{ width: "481px", display: "flex" }}>
-                <input
-                  placeholder="비밀번호를 입력해주세요"
-                  type="password"
-                  style={{
-                    padding: "14px",
-                    width: "332px",
-                  }}
-                />
-              </div>
-              <InfoUl className="checkPw">
-                <li>• 10글자 이상 입력</li>
-                <li>• 영문/숫자/특수문자(공백 제외)만 허용, 2개 이상의 조합</li>
-                <li>• 동일한 숫자 3개 이상 연속 사용 불가</li>
-              </InfoUl>
+            <td style={{ width: "481px", display: "flex" }}>
+              <input
+                placeholder="비밀번호를 입력해주세요"
+                type="password"
+                style={{
+                  padding: "14px",
+                  width: "332px",
+                }}
+              />
             </td>
+            <InfoUl className="checkPw">
+              <li>• 10글자 이상 입력</li>
+              <li>• 영문/숫자/특수문자(공백 제외)만 허용, 2개 이상의 조합</li>
+              <li>• 동일한 숫자 3개 이상 연속 사용 불가</li>
+            </InfoUl>
           </tr>
           <tr>
             <td>
               비밀번호확인<CheckSpan>*</CheckSpan>
             </td>
-            <td>
-              <div style={{ width: "481px", display: "flex" }}>
-                <input
-                  placeholder="비밀번호를 한번 더 입력해주세요"
-                  type="password"
-                  style={{
-                    padding: "14px",
-                    width: "332px",
-                  }}
-                />
-              </div>
-              <InfoUl className="ReCheckPw">
-                <li>• 동일한 비밀번호를 입력해주세요.</li>
-              </InfoUl>
+
+            <td style={{ width: "481px", display: "flex" }}>
+              <input
+                placeholder="비밀번호를 한번 더 입력해주세요"
+                type="password"
+                style={{
+                  padding: "14px",
+                  width: "332px",
+                }}
+              />
             </td>
+            <InfoUl className="ReCheckPw">
+              <li>• 동일한 비밀번호를 입력해주세요.</li>
+            </InfoUl>
           </tr>
 
           <tr>
             <td>
               이름<CheckSpan>*</CheckSpan>
             </td>
-            <td>
-              <div style={{ width: "481px", display: "flex" }}>
-                <input
-                  placeholder="이름을 입력해주세요"
-                  style={{
-                    padding: "14px",
-                    width: "332px",
-                  }}
-                />
-              </div>
+
+            <td style={{ width: "481px", display: "flex" }}>
+              <input
+                placeholder="이름을 입력해주세요"
+                style={{
+                  padding: "14px",
+                  width: "332px",
+                }}
+              />
             </td>
           </tr>
         </tbody>
@@ -196,8 +191,8 @@ const InfoUl = styled.ul`
   left: -37px;
   font-weight: 400;
   list-style: none;
-  margin-top: 4px;
-  margin-left: 5px;
+  margin-top: 0px;
+  margin-left: 0px;
 `;
 
 export default Signup;

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+import ReviewDetail from "./ReviewDetail";
 
 // import Comment from './Comment';
 
@@ -95,13 +96,7 @@ const ReviewList = (props) => {
               조회
             </InfoItem>
           </TableInfo>
-          <div
-            onClick={() => {
-              history.push("/reviewDetail");
-            }}
-          >
-            안녕!
-          </div>
+          <ReviewDetail />
           {/* Commnet List
           { comment_list &&
             comment_list.map((c, i) =>{
@@ -112,7 +107,10 @@ const ReviewList = (props) => {
         <ReveiwButtonWrap>
           <ReviewButton
             onClick={() => {
-              history.push("/reviewDetail");
+              window.alert(
+                "상품후기는 상품을 구매하시고 배송완료된 회원 분만 한 달 내 작성 가능합니다."
+              );
+              history.push("/reviewWrite");
             }}
           >
             후기쓰기
@@ -202,6 +200,10 @@ const ReviewButton = styled.button`
   border: 1px solid #5f0080;
   cursor: pointer;
   box-sizing: content-box;
+  &:hover {
+    background-color: #fff;
+    color: #795b8f;
+  }
 `;
 
 export default ReviewList;

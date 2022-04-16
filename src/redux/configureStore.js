@@ -6,7 +6,7 @@ import { connectRouter } from "connected-react-router";
 // 모듈
 import User from "./modules/user";
 import Post from "./modules/post";
-
+import Review from "./modules/review";
 
 // history를 페이지에서 편하게 사용할 수 있도록 준비
 export const history = createBrowserHistory();
@@ -14,10 +14,11 @@ export const history = createBrowserHistory();
 const rootReducer = combineReducers({
   user: User,
   post: Post,
+  review: Review,
   router: connectRouter(history),
 });
 
-const middlewares = [thunk.withExtraArgument({history:history})];
+const middlewares = [thunk.withExtraArgument({ history: history })];
 
 // 지금이 어느 환경인 지 알려주는 것
 const env = process.env.NODE_ENV;
@@ -31,11 +32,10 @@ if (env === "development") {
 // 리덕스 데브툴 설정하기
 const composeEnhancers =
   typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-      })
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
     : compose;
 
-// 미들웨어 묶기    
+// 미들웨어 묶기
 const enhancer = composeEnhancers(applyMiddleware(...middlewares));
 
 // 스토어 만들기

@@ -1,25 +1,44 @@
 import React from 'react';
 import styled from 'styled-components';
 import Slide from '../components/Slide';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import MiddleBanner from '../components/MiddleBanner';
-import BottomBanner from '../components/BottomBanner';
-import Card from '../components/Card';
+import CardList from '../components/CardList';
 
-const Main = () => {
+const Main = (props) => {
+
   return (
     <React.Fragment>
       <Slide/>
-      <Card/>
-      <MiddleBanner/>
-      <Div/>
+      <BackSt>
+        <CardList/>
+      </BackSt>
     </React.Fragment>
   )
 }
 
+const BackSt = styled.div`
+  width: 1100px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+`
+const DivSt = styled.div`
+  width: 68%;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+`
+
 const Div = styled.div`
-  height: 500px;
+  width: 100%;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  margin-top: 60px;
+  margin-bottom: 20px;
 `
 
 export default Main;

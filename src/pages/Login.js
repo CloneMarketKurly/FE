@@ -15,7 +15,6 @@ const Login = () => {
   const [password, setPw] = useState("");
 
   const login = () => {
-    dispatch(actionCreators.loginDB(userId, password));
     if (userId === "" || password === "") {
       window.alert("아이디와 비밀번호를 모두 입력해주세요!");
       return;
@@ -43,7 +42,11 @@ const Login = () => {
         </Text>
 
         <LoginInput placeholder="아이디를 입력해주세요" onChange={loginId} />
-        <LoginInput placeholder="비밀번호를 입력해주세요" onChange={loginPw} />
+        <LoginInput
+          placeholder="비밀번호를 입력해주세요"
+          onChange={loginPw}
+          type="password"
+        />
         <div
           style={{
             width: "40%",

@@ -40,11 +40,11 @@ const Signup = () => {
     //   window.alert("비밀번호 형식이 맞지 않습니다!");
     //   return;
     // }
-    if (password !== passwordCheck) {
-      window.alert("비밀번호와 비밀번호 확인이 일치하지 않습니다!");
-      return;
-    }
-    // if (!usernameCHK(username)) {
+    // if (password !== passwordCheck) {
+    //   window.alert("비밀번호와 비밀번호 확인이 일치하지 않습니다!");
+    //   return;
+    // }
+    // if (!usernameCHK(userName)) {
     //   window.alert("이름 형식이 맞지 않습니다!");
     //   return;
     // }
@@ -102,6 +102,7 @@ const Signup = () => {
                   height: "15px",
                 }}
               />
+
               <button
                 style={{
                   fontWeight: "bold",
@@ -124,7 +125,7 @@ const Signup = () => {
               </button>
             </td>
             {userId !== "" && !userIdCHK(userId) && (
-              <InfoUl className="checkId">
+              <InfoUl className="checkId" userId_chk={userId_chk}>
                 <li>• 6자 이상의 영문 혹은 영문과 숫자를 조합</li>
                 <li>• 아이디 중복확인</li>
               </InfoUl>

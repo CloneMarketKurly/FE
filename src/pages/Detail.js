@@ -1,8 +1,25 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import ReviewList from "./ReviewList";
+import { actionCreators as postActions } from "../redux/modules/post";
+import { useDispatch, useSelector } from "react-redux";
 
 const DetailItem = (props) => {
+  const dispatch = useDispatch();
+
+  const params = useParams();
+
+  const itemId = params.itemId;
+  console.log("itemId", itemId)
+
+  const detail_post = useSelector((state) => state.post.detail_list);
+  console.log("detail_post", detail_post);
+
+  React.useEffect(() => {
+    dispatch(postActions.getDetailAC(itemId));
+  }, []);
+
   return (
     <React.Fragment>
       <SectionView>

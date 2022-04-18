@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import { Text } from "../elements/Index";
+import { actionCreators as reviewActions } from "../redux/modules/review";
 
 const ReviewWrite = () => {
-  return (
+  const dispatch = useDispatch();
+
+  const [title, setTitle] = useState("")
+  const [comment, setComment] = useState("")
+  const [image, setImage] = useState("선택한 파일X")
+  
+  const addTitle = () => {
+    dispatch(reviewActions.addReviewAC(
+      title,
+      comment,
+      image,
+    ))
+  }
+   return (
     <React.Fragment>
       <CommentContainer>
         <ReviewTitle>후기 작성</ReviewTitle>
@@ -18,7 +34,12 @@ const ReviewWrite = () => {
           <TitleWrap>
             <CommentTitle style={{ height: "50px" }}>제목</CommentTitle>
             <CommentTitleBorder1>
-              <CommentTitleInput placeholder="제목을 입력해주세요." />
+              <CommentTitleInput 
+                onChange={(e) => {
+                  setTitle(e.target.value)
+                  // console.log(title)
+                }}
+                placeholder="제목을 입력해주세요." />
             </CommentTitleBorder1>
           </TitleWrap>
           <CommentTextWrap>
@@ -27,6 +48,10 @@ const ReviewWrite = () => {
             </CommentTextTitle>
             <CommentTitleBorder2>
               <CommentTextInput
+                onChange={(e) => {
+                  setComment(e.target.value)
+                  // console.log(comment)
+                }}
                 placeholder=" 자세한 후기는 다른 고객의 구매에 많은 도움이 되며,
           일반식품의 효능이나 효과 등에 오해의 소지가 있는 내용을 작성 시 검토 후 비공개 조치될 수 있습니다. 
           반품/환불 문의는 1:1문의로 가능합니다. 메롱"
@@ -74,7 +99,11 @@ const ReviewWrite = () => {
         </Issue>
 
         <Button>
-          <Text color="#ffffff" size="16.5px" margin="1px 0 0 0">
+          <Text
+            onClick={addTitle} 
+            color="#ffffff"
+            size="16.5px"
+            margin="1px 0 0 0">
             등록하기
           </Text>
         </Button>

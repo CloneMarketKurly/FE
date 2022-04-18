@@ -57,7 +57,6 @@ const Signup = () => {
       })
     );
   };
-
   const signUpId = (e) => {
     setId(e.target.value);
     console.log(userId);
@@ -74,7 +73,6 @@ const Signup = () => {
     setUserName(e.target.value);
     console.log(userName);
   };
-
   return (
     <Container>
       <Title>회원가입</Title>
@@ -90,19 +88,16 @@ const Signup = () => {
             <td>
               아이디<CheckSpan>*</CheckSpan>
             </td>
-
             <td style={{ display: "flex" }}>
               <input
                 onChange={signUpId}
                 placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"
                 style={{
-                  placeholder: "6자 이상의 영문 혹은 영문과 숫자를 조합",
                   padding: "14px",
                   width: "332px",
                   height: "15px",
                 }}
               />
-
               <button
                 style={{
                   fontWeight: "bold",
@@ -118,25 +113,32 @@ const Signup = () => {
                   paddingBottom: "5px",
                   border: "1px solid #8c8c8c",
                 }}
-                disabled={userId_chk ? true : false}
-                onClick={() => {}}
+                onClick={() => {
+                  window.alert("중복아니쥬?");
+                }}
               >
                 중복확인
               </button>
             </td>
             {userId !== "" && !userIdCHK(userId) && (
+              <InfoUl>
+                <li style={{ color: "red" }}>
+                  6자 이상의 영문 혹은 영문과 숫자를 조합
+                </li>
+                <li> 아이디 중복확인</li>
+              </InfoUl>
+            )}
+            {userId !== "" && userIdCHK(userId) && (
               <InfoUl className="checkId" userId_chk={userId_chk}>
-                <li>• 6자 이상의 영문 혹은 영문과 숫자를 조합</li>
-                <li>• 아이디 중복확인</li>
+                <li>6자 이상의 영문 혹은 영문과 숫자를 조합</li>
+                <li> 아이디 중복확인</li>
               </InfoUl>
             )}
           </tr>
-
           <tr>
             <td>
               비밀번호<CheckSpan>*</CheckSpan>
             </td>
-
             <td style={{ width: "481px", display: "flex" }}>
               <input
                 onChange={signUpPw}
@@ -150,16 +152,21 @@ const Signup = () => {
             </td>
             {password !== "" && !passwordCHK(password) && (
               <InfoUl className="checkPw">
-                <li>• 10글자 이상 입력</li>
-                <li>• 영문/숫자/특수문자(공백 제외)만 허용, 2개 이상의 조합</li>
-                <li>• 동일한 숫자 3개 이상 연속 사용 불가</li>
+                <li style={{ color: "red" }}> 10글자 이상 입력</li>
+                <li style={{ color: "red" }}>
+                  영문/숫자/특수문자(공백 제외)만 허용, 2개 이상의 조합
+                </li>
+                <li style={{ color: "red" }}>
+                  {" "}
+                  동일한 숫자 3개 이상 연속 사용 불가
+                </li>
               </InfoUl>
             )}
             {password !== "" && passwordCHK(password) && (
               <InfoUl className="checkPw">
-                <li>• 10글자 이상 입력</li>
-                <li>• 영문/숫자/특수문자(공백 제외)만 허용, 2개 이상의 조합</li>
-                <li>• 동일한 숫자 3개 이상 연속 사용 불가</li>
+                <li> 10글자 이상 입력</li>
+                <li>영문/숫자/특수문자(공백 제외)만 허용, 2개 이상의 조합</li>
+                <li>동일한 숫자 3개 이상 연속 사용 불가</li>
               </InfoUl>
             )}
           </tr>
@@ -179,13 +186,13 @@ const Signup = () => {
               />
             </td>
             {password !== "" && !passwordCHK(passwordCheck) && (
-              <InfoUl className="ReCheckPw">
-                <li>• 동일한 비밀번호를 입력해주세요.</li>
+              <InfoUl style={{ color: "red" }}>
+                <li>동일한 비밀번호를 입력해주세요.</li>
               </InfoUl>
             )}
             {password !== "" && passwordCHK(passwordCheck) && (
-              <InfoUl className="ReCheckPw">
-                <li>• 동일한 비밀번호를 입력해주세요.</li>
+              <InfoUl>
+                <li>동일한 비밀번호를 입력해주세요.</li>
               </InfoUl>
             )}
           </tr>

@@ -2,8 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import Slide from '../components/Slide';
 import CardList from '../components/CardList';
+import { useDispatch } from 'react-redux';
+import { actionCreators as postActions } from "../redux/modules/post";
 
 const Main = (props) => {
+  const dispatch = useDispatch();
+
+
+  React.useEffect(() => {
+    dispatch(postActions.getPostAC());
+  }, []);
 
   return (
     <React.Fragment>

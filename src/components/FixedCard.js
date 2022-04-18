@@ -1,24 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
-import { history } from '../redux/configureStore'
 
-const Card = (props) => {
+const FixedCard = (props) => {
 
   // console.log(props.item)
   
   return (
     <React.Fragment>
-      <DivSt
-        onClick={() => {
-          history.push(`/detail/${props.item.id}`);
-        }}
-      >
+      <DivSt>
         <CardSt>
           <ImageSt>
-            <img style={{width: "267px", height: "320px"}}  src={props.item.image}/>
+            <img style={{width: "267px", height: "320px"}}  src={props.item.src}/>
           </ImageSt>
-          <h3 style={{marginLeft: "4px", fontSize: "16px"}}>{props.item.title}</h3>
-          <span style={{marginLeft: "4px", fontSize: "16px", color: "#FA622F"}}>7%</span>&nbsp;
+          <h3 style={{marginLeft: "4px", fontSize: "16px"}}>{props.item.alt}</h3>
+          <span style={{marginLeft: "4px", fontSize: "16px", color: "#FA622F"}}>{props.item.sale}</span>
           <span style={{marginLeft: "4px", fontSize: "16px"}}>{props.item.price}원</span>
         </CardSt>
       </DivSt>
@@ -55,4 +50,4 @@ const ImageSt = styled.div`
 `
 
 
-export default Card;
+export default FixedCard;

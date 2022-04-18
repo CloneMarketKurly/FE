@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components';
 import Card from '../components/Card';
+import FixedCard from './FixedCard';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -14,8 +16,13 @@ import BottomBanner from '../components/BottomBanner';
 import "swiper/css/navigation";
 import "../css/swiperCss.css";
 
+
 // 카드 리스트 + 아래쪽 카드 고정값
 const FixedImg = (props) => {
+  const dispatch = useDispatch();
+
+  const all_list = useSelector((state) => state.post.post)
+
   return (
     <React.Fragment>
       <Div>이 상품 어때요?</Div>
@@ -35,10 +42,10 @@ const FixedImg = (props) => {
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        {/* 지금 현재는 mainImg 안에 있는 정보들을 map 돌려 붙여넣기 */}
+        {/* all_list 안에 있는 정보들을 map 돌려 붙여넣기 */}
         <DivSt>
-          {mainImg.map((item) => (
-          <SwiperSlide key={item.id}><Card key={item.id} item={item}/></SwiperSlide>
+          {all_list.map((item, idx) => (
+          <SwiperSlide key={item.id}><Card key={idx} item={item}/></SwiperSlide>
           ))}
         </DivSt>
       </Swiper>
@@ -64,7 +71,7 @@ const FixedImg = (props) => {
         <DivSt>
           {/* 지금 현재는 mainImg 안에 있는 정보들을 map 돌려 붙여넣기 */}
           {mainImg.map((item) => (
-          <SwiperSlide key={item.id}><Card key={item.id} item={item}/></SwiperSlide>
+          <SwiperSlide key={item.id}><FixedCard key={item.id} item={item}/></SwiperSlide>
           ))}
         </DivSt>
       </Swiper>
@@ -88,7 +95,7 @@ const FixedImg = (props) => {
         <DivSt>
           {/* 지금 현재는 mainImg 안에 있는 정보들을 map 돌려 붙여넣기 */}
           {mainImg.map((item) => (
-          <SwiperSlide key={item.id}><Card key={item.id} item={item}/></SwiperSlide>
+          <SwiperSlide key={item.id}><FixedCard key={item.id} item={item}/></SwiperSlide>
           ))}
         </DivSt>
       </Swiper>

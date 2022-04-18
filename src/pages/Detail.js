@@ -11,10 +11,10 @@ const DetailItem = (props) => {
   const params = useParams();
 
   const itemId = params.itemId;
-  console.log("itemId", itemId)
+  // console.log("itemId", itemId)
 
-  const detail_post = useSelector((state) => state.post.detail_list);
-  console.log("detail_post", detail_post);
+  const detail_post = useSelector((state) => state.post.detail_post);
+  // console.log("detail_post", detail_post);
 
   React.useEffect(() => {
     dispatch(postActions.getDetailAC(itemId));
@@ -25,13 +25,13 @@ const DetailItem = (props) => {
       <SectionView>
         <ImgWrap>
           {/* item.image */}
-          <img src="https://velog.velcdn.com/images/gagyeong/post/f430aa5a-aeb2-4897-9f45-8c0549a02dee/image.png"></img>
+          <img style={{width: "416px", height: "538"}} src={detail_post.image}></img>
           <TitleWrap>
             {/* item.title */}
-            <Name>춘천 국물 닭갉비 떡볶이</Name>
+            <Name>{detail_post.title}</Name>
             {/* item.des */}
-            <Short>닭갈비와 떡볶이의 오묘한 조화</Short>
-            <Price>11,900원</Price>
+            <Short>{detail_post.des}</Short>
+            <Price>{detail_post.price}원</Price>
 
             <InfoWrap>
               <dl className="list">
@@ -41,7 +41,7 @@ const DetailItem = (props) => {
               <dl className="list">
                 {/* item.weight */}
                 <dt className="tit">중량/용량</dt>
-                <dd className="desc">950g</dd>
+                <dd className="desc">{detail_post.weight}</dd>
               </dl>
               <dl className="list">
                 <dt className="tit">배송구분</dt>
@@ -50,7 +50,7 @@ const DetailItem = (props) => {
               <dl className="list">
                 {/* item.delivery */}
                 <dt className="tit">포장타입</dt>
-                <dd className="desc">냉동/스티로폼</dd>
+                <dd className="desc">{detail_post.delivery}</dd>
               </dl>
               <dl className="list">
                 <dt className="tit">알레르기정보</dt>
@@ -61,9 +61,7 @@ const DetailItem = (props) => {
               <dl className="list">
                 <dt className="tit">안내사항</dt>
                 <dd className="desc">
-                  해당제품은 최저가로 정상가 세팅되었으나, 유통사(수입사)의
-                  가격정책이슈로 정상 판매가로 재세팅하였습니다. (단,
-                  이전가격보다 저렴한 가격으로 할인판매예정/12월말까지)
+                 {detail_post.promise}
                 </dd>
               </dl>
             </InfoWrap>
@@ -100,13 +98,30 @@ const DetailItem = (props) => {
         <BtnWrap>
           <button className="btn">장바구니 담기</button>
         </BtnWrap>
-        <div>
-          <img src="https://i.esdrop.com/d/f/zoDvw3Gypq/PzbrOv6Lin.png" />
+
+        <div style={{
+          display: "flex",
+          flexDirection: "colum",
+          justifyContent: "center",
+          width: "1000px",
+          height: "50px",
+          fontSize: "30px",
+        }}>
+          중간 미들 헤더 들어갈 자리
+        </div>
+
+        <div style={{
+          display: "flex",
+          flexDirection: "colum",
+          justifyContent: "center",
+          width: "1000px",
+        }}>
+          <img style={{width: "100%"}} src={detail_post.detail_Image} />
         </div>
       </SectionView>
 
-      {/* item.detailImage              */}
-      <ReviewList />
+      {/* item.detailImage */}
+      <ReviewList itemId={itemId} />
     </React.Fragment>
   );
 };

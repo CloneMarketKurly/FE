@@ -45,7 +45,7 @@ const FixedImg = (props) => {
         {/* all_list 안에 있는 정보들을 map 돌려 붙여넣기 */}
         <DivSt>
           {all_list.map((item, idx) => (
-          <SwiperSlide key={item.id}><Card key={idx} item={item}/></SwiperSlide>
+          <SwiperSlide key={item.id}><Card item={item}/></SwiperSlide>
           ))}
         </DivSt>
       </Swiper>

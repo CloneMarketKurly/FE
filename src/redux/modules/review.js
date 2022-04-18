@@ -11,7 +11,7 @@ const DELETE_REVIEW = "DELETE_REVIEW";
 
 // 초기값
 const initialState = {
-  review : [
+  comment : [
     {
 
   }
@@ -23,45 +23,33 @@ const initialPost = [{
 }]
 
 // 액션 생성 함수
-const getReview = createAction(SET_REVIEW, (review) => ({review}));
-const addReview = createAction(ADD_REVIEW, (review_list) => ({review_list}));
-const deleteReview = createAction(DELETE_REVIEW, (itemId) => ({ itemId }));
-const editReview = createAction(EDIT_REVIEW, (itemId, review_list) => ({itemId, review_list}));
+const getReview = createAction(SET_REVIEW, (comment) => ({comment}));
+const addReview = createAction(ADD_REVIEW, (comment_list) => ({comment_list}));
+const deleteReview = createAction(DELETE_REVIEW, (comment, commentId) => ({ comment, commentId }));
+const editReview = createAction(EDIT_REVIEW, (itemId, comment_list) => ({itemId, comment_list}));
 
 
 // 미들웨어
-const getReviewAC = (userName, comment, image) => {
-  return function (dispatch, getState, {history}) {
-    axios.post("", {
 
-    },
-    // {headers: { 'Authorization' : `Bearer ${myToken}`}}
-    )
-    .then(
-      dispatch(addReview({userName, comment, image}))
-    )
-    .catch(error => {
-      console.log("어림없어", error)
-    })
-  }
-}
+const addReviewAC = (itemId, title, comment) => {
 
-const addReviewAC = (userName, comment, image) => {
-  console.log("후기 추가하기" + userName, comment, image)
+  console.log("추가하기 itemId" + itemId)
   let myToken = getCookie("Authorization")
+  let userId = getCookie("userId")
   return function (dispatch, getState, {history}) {
-    axios.post('http://3.37.89.93/item/details/{itemId}/comments', {
-      userName: userName,
+    axios.post(`http://3.37.89.93/item/details/${itemId}/comments`, {
+      userId: userId,
+      title: title,
       comment: comment,
-      image: image,
     },
     {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
-    .then(
-      dispatch(addReview({userName, comment, image}))
-    )
+    .then((res) => {
+      console.log(res)
+      dispatch(addReview({userId, title, comment}))
+    })
     .catch(error => {
-      console.log("어림없어", error)
+      console.log("서버에러", error)
     })
   }
 }
@@ -82,16 +70,26 @@ const editReviewAC = (title, content, stars ) => {
   }
 }
 
-const deleteReviewAC = (title, content, stars ) => {
-  return function (dispatch, getState, {history}) {
-    axios.post("", {
+const deleteReviewAC = (commentId) => {
+  let myToken = getCookie("Authorization")
+  console.log("코멘트아이디", commentId)
+  console.log("코멘트아이디", myToken)
 
+  return function (dispatch, getState, {history}) {
+    if (!commentId) window.alert("댓글 정보가 없어요! :(");
+    // console.log(commentId);
+    axios.delete(`http://3.37.89.93/item/details/comments/${commentId}`,
+    {headers: { 'Authorization' : `Bearer ${myToken}`}},
+    {
+      // commentId: commentId
     },
-    // {headers: { 'Authorization' : `Bearer ${myToken}`}}
+    
     )
-    .then(
-      dispatch(addReview({title, content, stars}))
-    )
+    .then((res) => {
+      console.log(res)
+      dispatch(deleteReview(commentId))
+      
+    })
     .catch(error => {
       console.log("어림없어", error)
     })
@@ -109,13 +107,14 @@ export default handleActions(
     [ADD_REVIEW]: (state, action) =>
 
     produce(state, (draft) => {
-      draft.review.unshift(action.payload.review_list);
+      draft.comment.unshift(action.payload.comment_list);
     }),
 
     [DELETE_REVIEW]: (state, action) =>
       produce(state, (draft) => {
-        // console.log(action.payload.planId)
-        // draft.todos.content = draft.todos.content.filter((p) =>  p.planId !== action.payload.planId);
+        // console.log(action.payload.commentId)
+        draft.comment = draft.comment.filter((p) =>  p.id !== action.payload.commentId);
+        window.location.reload()
       }),
 
     [EDIT_REVIEW]: (state, action) =>
@@ -133,7 +132,6 @@ const actionCreators = {
   addReview,
   editReview,
   deleteReview,
-  getReviewAC,
   addReviewAC,
   editReviewAC,
   deleteReviewAC

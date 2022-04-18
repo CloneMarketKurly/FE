@@ -2,11 +2,22 @@ import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import ReviewDetail from "./ReviewDetail";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { actionCreators as postActions } from "../redux/modules/post";
 
 // import Comment from './Comment';
 
 const ReviewList = (props) => {
   const history = useHistory();
+  const itemId = props.itemId;
+  // console.log("props.itemId", itemId)
+
+  const detail_post = useSelector((state) => state.post.detail_post);
+  // console.log("detail_comment", detail_post.comments);
+  const review = detail_post.comments
+  // console.log("리뷰", review)
+
   return (
     <>
       <CommentListWrap>
@@ -96,7 +107,9 @@ const ReviewList = (props) => {
               조회
             </InfoItem>
           </TableInfo>
-          <ReviewDetail />
+          {review && review.map((item, idx) => {
+            return <ReviewDetail key={idx} item={item}/>
+          })}
           {/* Commnet List
           { comment_list &&
             comment_list.map((c, i) =>{
@@ -110,7 +123,7 @@ const ReviewList = (props) => {
               window.alert(
                 "상품후기는 상품을 구매하시고 배송완료된 회원 분만 한 달 내 작성 가능합니다."
               );
-              history.push("/reviewWrite");
+              history.push(`/reviewWrite/${itemId}`);
             }}
           >
             후기쓰기

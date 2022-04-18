@@ -40,7 +40,7 @@ const signUpDB = (payload) => {
       .then((res) => {
         console.log(res);
         window.alert("회원가입이 완료되었습니다!");
-        history.replace("/");
+        history.replace("/login");
       })
       .catch((err) => {
         window.alert("회원가입 실패", err);
@@ -156,6 +156,7 @@ const actionCreators = {
   loginDB,
   logoutDB,
   loginCheckDB,
+  dupCheckIdDB,
 };
 
 export { actionCreators };

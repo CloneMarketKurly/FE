@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { history } from "../redux/configureStore"
 import styled from "styled-components";
 
 import { Text } from "../elements/Index";
@@ -8,6 +9,11 @@ import { actionCreators as reviewActions } from "../redux/modules/review";
 
 const ReviewWrite = () => {
   const dispatch = useDispatch();
+  const params = useParams();
+
+  const itemId = params.itemId;
+  // console.log(itemId)
+
 
   const [title, setTitle] = useState("")
   const [comment, setComment] = useState("")
@@ -15,10 +21,11 @@ const ReviewWrite = () => {
   
   const addTitle = () => {
     dispatch(reviewActions.addReviewAC(
+      itemId,
       title,
       comment,
-      image,
     ))
+    history.replace(`/detail/${itemId}`)
   }
    return (
     <React.Fragment>

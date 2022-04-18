@@ -1,9 +1,25 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { actionCreators as reviewActions } from "../redux/modules/review";
+
+
 
 const ReviewDetail = (props) => {
+  const dispatch = useDispatch();
   const [clickComment, setClickComment] = useState(false);
   const [count, setCount] = useState(0);
+
+  // console.log("리뷰 상세정보", props.item)
+
+  let commentId = props.item.commentId
+  // console.log(commentId)
+
+  const deleteReview = () => {
+    dispatch(reviewActions.deleteReviewAC(
+      commentId
+    ))
+  }
 
   return (
     <>
@@ -29,7 +45,7 @@ const ReviewDetail = (props) => {
             textAlign: "left",
           }}
         >
-          존맛탠 춘천 닭갈비
+          {props.item.title}
         </CommentData>
         <CommentData
           style={{
@@ -43,7 +59,7 @@ const ReviewDetail = (props) => {
             textAlign: "left",
           }}
         >
-          rkruddlWkd
+          {props.item.userId}
         </CommentData>
         <CommentData
           style={{
@@ -75,14 +91,11 @@ const ReviewDetail = (props) => {
       {clickComment && (
         <CommentDetail>
           <DetailWrap>
-            <DetailTitle>춘천 국물 닭갉비 떡볶이</DetailTitle>
+            <DetailTitle>{props.item.title}</DetailTitle>
             <DetailImage src="https://img-cf.kurly.com/shop/data/review/20211010/60d32b656996fbf65521863d010c395f.jpg" />
             {/* {props.file ? <DetailImage src={props.file} /> : null} */}
             <Detail>
-              정말 맛있어요..부드럽고 매콤하며 느끼하지도 않고ㅠㅠ 분모자는
-              쫀득하니 로제떡볶이를 함께먹는거 같구요! 다음에도 재구매의사 완전
-              있어요!! 남은 소스에 밥도 볶아 드세요~소스가 넉넉해서
-              충분하더라구요!
+              {props.item.comment}
             </Detail>
           </DetailWrap>
 
@@ -97,9 +110,7 @@ const ReviewDetail = (props) => {
           </HelpWrap>
           <DeleteWrap>
             <DeleteButton
-              onClick={() => {
-                window.alert("작성자만 삭제할 수 있습니다.");
-              }}
+              onClick={deleteReview}
             >
               삭제하기
             </DeleteButton>

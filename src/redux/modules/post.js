@@ -51,15 +51,15 @@ const getPostAC = () => {
 const getDetailAC = (itemId) => {
   let myToken = getCookie("Authorization")
   return function (dispatch, getState, {history}) {
-    console.log(itemId)
+    // console.log(itemId)
     axios.get(`http://3.37.89.93/item/details/${itemId}`, {
 
     },
     {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
     .then((res) => {
-      console.log(res)
-      // dispatch(getPost(res.data))
+      console.log("디테일 로드", res)
+      dispatch(getDetail(res.data))
 
     })
     .catch(error => {
@@ -79,8 +79,8 @@ export default handleActions(
     }),
     [GET_DETAIL]: (state, action) =>
     produce(state, (draft) => {
-      console.log(action.payload)
-      // draft.detail_post = action.payload.detail_post;
+      // console.log(action.payload)
+      draft.detail_post = action.payload.detail_post;
     }),
   },
   initialState

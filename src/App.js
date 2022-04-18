@@ -2,6 +2,10 @@ import React from "react";
 import { Route } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "./redux/configureStore";
+import { useSelector } from "react-redux";
+import { getCookie } from "./shared/Cookie";
+import { actionCreators } from "./redux/modules/user";
+import { useDispatch } from "react-redux";
 import "./App.css";
 
 import Main from "./pages/Main";
@@ -15,6 +19,15 @@ import ReviewDetail from "./pages/ReviewDetail";
 import Footer from "./components/Footer";
 
 function App() {
+  const dispatch = useDispatch();
+  const is_login = useSelector((state) => state.user.is_login);
+  const is_token = getCookie("Authorization") ? true : false;
+  React.useEffect(() => {
+    if (is_token) {
+      dispatch(actionCreators.loginCheckDB());
+    }
+  });
+
   return (
     <React.Fragment>
       <ConnectedRouter history={history}>

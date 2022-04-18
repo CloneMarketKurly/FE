@@ -1,19 +1,25 @@
 import React from "react";
 import styled from "styled-components";
-import { Grid, Button, Text } from "../elements/Index";
-import { BsList, BsCart2, BsHeart, BsGeoAlt, BsSearch } from "react-icons/bs";
+import { Grid, Text } from "../elements/Index";
+import { BsList, BsCart2, BsHeart, BsGeoAlt } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
-import { getCookie, deleteCookie } from "../shared/Cookie";
+import { getCookie } from "../shared/Cookie";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators } from "../redux/modules/user";
 
 const Header = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const is_login = useSelector((state) => state.user.is_login);
-  const userId = getCookie("userId");
 
-  if (is_login) {
+  // const userId = useSelector((state) => state.user.userInfo.userId);
+  // console.log(userId);
+  const is_login = getCookie("is_login");
+  const is_token = getCookie("Authorization");
+  console.log(is_login);
+  console.log(is_token);
+
+  if (is_login && is_token) {
+    const userId = getCookie("userId");
     return (
       <React.Fragment>
         <Grid width="auto" is_flex>
@@ -28,7 +34,7 @@ const Header = () => {
                 <Text
                   color="black"
                   onClick={() => {
-                    dispatch(actionCreators.logOutDB());
+                    dispatch(actionCreators.logoutDB());
                   }}
                 >
                   &nbsp;로그아웃 |

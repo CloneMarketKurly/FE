@@ -1,10 +1,34 @@
-import React from "react";
-import styled from "styled-components";
-import { Text, Input, Grid } from "../elements/Index";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { Text } from "../elements/Index";
+import styled from "styled-components";
+
+import { actionCreators } from "../redux/modules/user";
+import { getCookie, setCookie, deleteCookie } from "../shared/Cookie";
 
 const Login = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  const [userId, setId] = useState("");
+  const [password, setPw] = useState("");
+
+  const login = () => {
+    dispatch(actionCreators.loginDB(userId, password));
+    if (userId === "" || password === "") {
+      window.alert("아이디와 비밀번호를 모두 입력해주세요!");
+      return;
+    }
+    dispatch(actionCreators.loginDB(userId, password));
+  };
+  const loginId = (e) => {
+    setId(e.target.value);
+  };
+  const loginPw = (e) => {
+    setPw(e.target.value);
+  };
+
   return (
     <React.Fragment>
       <LoginWrap>
@@ -18,8 +42,8 @@ const Login = () => {
           로그인
         </Text>
 
-        <LoginInput placeholder="아이디를 입력해주세요" />
-        <LoginInput placeholder="비밀번호를 입력해주세요" />
+        <LoginInput placeholder="아이디를 입력해주세요" onChange={loginId} />
+        <LoginInput placeholder="비밀번호를 입력해주세요" onChange={loginPw} />
         <div
           style={{
             width: "40%",
@@ -57,13 +81,21 @@ const Login = () => {
           </div>
         </div>
 
-        <ButtonLogin>
+        <ButtonLogin
+          onClick={() => {
+            login();
+          }}
+        >
           <Text color="#ffffff" size="16.5px" margin="1px 0 0 0">
             로그인
           </Text>
         </ButtonLogin>
 
-        <ButtonSignup onClick={() => {}}>
+        <ButtonSignup
+          onClick={() => {
+            history.push("/signup");
+          }}
+        >
           <Text color="#5f0081" size="16px" margin="1px 0 0 0">
             회원가입
           </Text>

@@ -1,11 +1,76 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Grid, Button, Text } from '../elements/Index';
-import { BsList, BsCart2, BsHeart, BsGeoAlt, BsSearch } from 'react-icons/bs'
-import { useHistory } from 'react-router-dom';
+import React from "react";
+import styled from "styled-components";
+import { Grid, Button, Text } from "../elements/Index";
+import { BsList, BsCart2, BsHeart, BsGeoAlt, BsSearch } from "react-icons/bs";
+import { useHistory } from "react-router-dom";
+import { getCookie, deleteCookie } from "../shared/Cookie";
+import { useSelector, useDispatch } from "react-redux";
+import { actionCreators } from "../redux/modules/user";
 
 const Header = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
+  const is_login = useSelector((state) => state.user.is_login);
+  const userId = getCookie("userId");
+
+  if (is_login) {
+    return (
+      <React.Fragment>
+        <Grid width="auto" is_flex>
+          <HeaderSt>
+            <BodySt>
+              <TextSt>
+                <Text color="purple">샛별/택배</Text>
+                <Text color="black">배송안내 ></Text>
+              </TextSt>
+              <TextSt>
+                <Text color="black">{userId}님 환영합니다! |</Text>
+                <Text
+                  color="black"
+                  onClick={() => {
+                    dispatch(actionCreators.logOutDB());
+                  }}
+                >
+                  &nbsp;로그아웃 |
+                </Text>
+
+                <Text color="black">&nbsp;고객센터▼</Text>
+              </TextSt>
+            </BodySt>
+            <ImgSt>
+              <div>
+                <img
+                  onClick={() => {
+                    history.push("/");
+                  }}
+                  src="/img/kurly.png"
+                />
+              </div>
+            </ImgSt>
+            <BottomSt>
+              <BsList style={{ margin: "0px 0px 0px 20px" }} />
+              <li>전체 카테고리</li>
+              <li>신상품</li>
+              <li>베스트</li>
+              <li>알뜰쇼핑 </li>
+              <li> 특가/혜택</li>
+              <SearchWrap>
+                <Search placeholder="검색어를 입력해주세요."></Search>
+                <SearchIcon />
+              </SearchWrap>
+              <div>
+                <BsGeoAlt style={{ margin: "4px 10px 0px 10px" }} />
+                <BsHeart style={{ margin: "5px 0px 0px 10px" }} />
+                <BsCart2 style={{ margin: "0px 0px 2px 20px" }} />
+              </div>
+            </BottomSt>
+          </HeaderSt>
+        </Grid>
+        <Grid margin="50px" />
+      </React.Fragment>
+    );
+  }
+
   return (
     <React.Fragment>
       <Grid width="auto" is_flex>
@@ -17,25 +82,36 @@ const Header = () => {
             </TextSt>
             <TextSt>
               <Text
-                onClick={()=> {
-                  history.push("/signup")
+                onClick={() => {
+                  history.push("/signup");
                 }}
-                color="purple">회원가입 |</Text>
+                color="purple"
+              >
+                회원가입 |
+              </Text>
               <Text
-               onClick={()=> {
-                history.push("/login")
-              }}
-                color="black">&nbsp;로그인 |</Text>
+                onClick={() => {
+                  history.push("/login");
+                }}
+                color="black"
+              >
+                &nbsp;로그인 |
+              </Text>
               <Text color="black">&nbsp;고객센터▼</Text>
             </TextSt>
           </BodySt>
           <ImgSt>
             <div>
-              <img onClick={() => {history.push("/")}} src='/img/kurly.png'/>
+              <img
+                onClick={() => {
+                  history.push("/");
+                }}
+                src="/img/kurly.png"
+              />
             </div>
           </ImgSt>
           <BottomSt>
-            <BsList style={{margin: "0px 0px 0px 20px"}}/>
+            <BsList style={{ margin: "0px 0px 0px 20px" }} />
             <li>전체 카테고리</li>
             <li>신상품</li>
             <li>베스트</li>
@@ -43,25 +119,25 @@ const Header = () => {
             <li> 특가/혜택</li>
             <SearchWrap>
               <Search placeholder="검색어를 입력해주세요."></Search>
-              <SearchIcon/>
+              <SearchIcon />
             </SearchWrap>
             <div>
-              <BsGeoAlt style={{margin: "4px 10px 0px 10px"}}/>
-              <BsHeart style={{margin: "5px 0px 0px 10px"}}/>
-              <BsCart2 style={{margin: "0px 0px 2px 20px"}}/>
+              <BsGeoAlt style={{ margin: "4px 10px 0px 10px" }} />
+              <BsHeart style={{ margin: "5px 0px 0px 10px" }} />
+              <BsCart2 style={{ margin: "0px 0px 2px 20px" }} />
             </div>
           </BottomSt>
         </HeaderSt>
       </Grid>
-      <Grid margin="50px"/>
+      <Grid margin="50px" />
     </React.Fragment>
-  )
-}
+  );
+};
 
 const HeaderSt = styled.div`
   width: 1500px;
   margin: auto;
-`
+`;
 
 const BodySt = styled.div`
   width: 98.5%;
@@ -69,7 +145,7 @@ const BodySt = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin: 5px 10px 0px 10px;
-`
+`;
 
 const ImgSt = styled.div`
   width: 100%;
@@ -81,7 +157,7 @@ const ImgSt = styled.div`
   & div {
     width: 7%;
   }
-`
+`;
 const SearchWrap = styled.div`
   position: relative;
 `;
@@ -123,8 +199,7 @@ const TextSt = styled.div`
   /* width: 18%; */
   display: flex;
   flex-direction: row;
-    
-`
+`;
 
 const BottomSt = styled.ul`
   display: flex;
@@ -148,7 +223,7 @@ const BottomSt = styled.ul`
       text-decoration: underline;
     }
   }
-  
+
   /* & .all-category::before {
     content: url("https://res.kurly.com/pc/service/common/1908/ico_gnb_all_off.png")
       no-repeat;
@@ -157,6 +232,5 @@ const BottomSt = styled.ul`
     margin-right: 10px;
   } */
 `;
-
 
 export default Header;

@@ -1,33 +1,69 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { Text } from "../elements/Index";
 import { useParams } from "react-router-dom";
-import { history } from "../redux/configureStore"
 import styled from "styled-components";
 
-import { Text } from "../elements/Index";
+// 리덕스 관련
+import { history } from "../redux/configureStore"
+import { useDispatch, useSelector } from "react-redux";
+
+
 import { actionCreators as reviewActions } from "../redux/modules/review";
 
 const ReviewWrite = () => {
   const dispatch = useDispatch();
+  const detail_post = useSelector((state) => state.post.detail_post.comments);
+  console.log("write 페이지", detail_post)
 
-  // params의 itemId를 가지고 온다.
+  // params의 itemId와 commentId를 가지고 온다.
   const params = useParams();
   const itemId = params.itemId;
-  // console.log(itemId)
-
-  const [title, setTitle] = useState("")
-  const [comment, setComment] = useState("")
-  const [image, setImage] = useState("선택한 파일X")
+  const commentId = params.commentId;
   
-  const addTitle = () => {
+  // 수정을 알 수 있는 방법
+  const is_edit = commentId ? true : false; 
+  let _review = is_edit ? detail_post.find((p) => p.commentId === commentId) : null;
+
+  const [title, setTitle] = useState(_review ? _review.title : "");
+  const [comment, setComment] = useState(_review ? _review.comment : "");
+  // const [title, setTitle] = useState("");
+  // const [comment, setComment] = useState("");
+  const [image, setImage] = useState("선택한 파일X")
+
+  // React.useEffect(() => {
+  //   if(is_edit && !_review) {
+  //     window.alert("포스트 정보가 없어요!");
+  //     history.goBack();
+  //   }
+
+  //   // if(is_edit) {
+  //   //   dispatch(imageActions.setPreview(_post.image_url))
+  //   // }
+  // }, []);
+  
+  const addReview = () => {
+    if(title === "" || comment === "") {
+      window.alert("내용을 모두 작성해주세요.")
+      return;
+    }
     // 리뷰를 추가할 때 addReviewAc로 itemId, title, comment를 넘긴다.
     dispatch(reviewActions.addReviewAC(
       itemId,
       title,
       comment,
     ))
-    history.replace(`/detail/${itemId}`)
+    // history.replace(`/detail/${itemId}`)
   }
+
+  const editReview = () => {
+    dispatch(reviewActions.editReviewAC(
+      itemId,
+      commentId,
+      title,
+      comment,
+    ))
+  };
+
    return (
     <React.Fragment>
       <CommentContainer>
@@ -43,6 +79,7 @@ const ReviewWrite = () => {
             <CommentTitle style={{ height: "50px" }}>제목</CommentTitle>
             <CommentTitleBorder1>
               <CommentTitleInput 
+                value={title}
                 onChange={(e) => {
                   setTitle(e.target.value)
                   // console.log(title)
@@ -56,6 +93,7 @@ const ReviewWrite = () => {
             </CommentTextTitle>
             <CommentTitleBorder2>
               <CommentTextInput
+                value={comment}
                 onChange={(e) => {
                   setComment(e.target.value)
                   // console.log(comment)
@@ -105,16 +143,30 @@ const ReviewWrite = () => {
           혹시 상품에 문제가 있으셨나요?
           <IssueSpan>1:1 문의하기</IssueSpan>
         </Issue>
-
+        
+        {is_edit ?
+          <Button>
+          <Text
+            onClick={editReview} 
+            color="#ffffff"
+            size="16.5px"
+            margin="1px 0 0 0">
+            수정하기
+          </Text>
+        </Button>
+        :
         <Button>
           <Text
-            onClick={addTitle} 
+            onClick={addReview} 
             color="#ffffff"
             size="16.5px"
             margin="1px 0 0 0">
             등록하기
           </Text>
         </Button>
+
+        }
+        
       </CommentContainer>
     </React.Fragment>
   );

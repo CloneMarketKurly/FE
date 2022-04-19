@@ -12,6 +12,7 @@ import { history } from "../redux/configureStore";
 const ReviewDetail = (props) => {
   const dispatch = useDispatch();
   const params = useParams();
+  // console.log(props.item)
   
   const [clickComment, setClickComment] = useState(false);
   const [count, setCount] = useState(0);
@@ -21,6 +22,8 @@ const ReviewDetail = (props) => {
   let commentId = props.item.commentId
   let itemId = params.itemId
   let user = props.item.userId
+  let helpCnt = props.item.helpCnt
+
   const userId = getCookie("userId");
   // console.log(user, userId)
 
@@ -133,17 +136,14 @@ const ReviewDetail = (props) => {
           <HelpWrap>
           <HelpButton
             onClick={() => {
-              setCount(+1);
+              dispatch(reviewActions.helpReviewAC(commentId))
             }}
           >
-            도움이 돼요{count}
+            도움이 돼요&nbsp;{helpCnt}
           </HelpButton>
         </HelpWrap>
       }
-        
-
-
-        </CommentDetail>
+       </CommentDetail>
       )}
     </>
   );

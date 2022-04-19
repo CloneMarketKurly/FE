@@ -8,38 +8,35 @@ import { history } from "../redux/configureStore"
 import { useDispatch, useSelector } from "react-redux";
 
 
-import { actionCreators as reviewActions } from "../redux/modules/review";
+import { actionCreators as reviewActions } from "../redux/modules/post";
 
 const ReviewWrite = () => {
   const dispatch = useDispatch();
-  const detail_post = useSelector((state) => state.post.detail_post.comments);
-  console.log("write 페이지", detail_post)
+  const detail_post = useSelector((state) => state.post.detail_post);
+  // console.log("write 페이지", detail_post)
+  const initalValue = detail_post.comments
+  // console.log("초기값", initalValue)
 
   // params의 itemId와 commentId를 가지고 온다.
   const params = useParams();
   const itemId = params.itemId;
   const commentId = params.commentId;
+  // console.log("파람스 코멘트아이디", commentId)
   
   // 수정을 알 수 있는 방법
   const is_edit = commentId ? true : false; 
-  let _review = is_edit ? detail_post.find((p) => p.commentId === commentId) : null;
+  // console.log("이즈에딧", is_edit)
+
+  // 여기서 발생한 문제
+  // 서버에서 받아온 제이슨 형식의 데이타 안의 commentId는 보기엔 숫자이지만 숫자형식이 아니었다.
+  // 그래서 형식까지 맞춘 것을 찾으려 하니 계속 undefined가 나와서 형식 비교를 없애주니 제대로 나왔다.
+  let _review = is_edit ? initalValue.find((p) => p.commentId == commentId) : null;
+  // console.log("제발 코멘트 가져와조..", _review)
+
 
   const [title, setTitle] = useState(_review ? _review.title : "");
   const [comment, setComment] = useState(_review ? _review.comment : "");
-  // const [title, setTitle] = useState("");
-  // const [comment, setComment] = useState("");
   const [image, setImage] = useState("선택한 파일X")
-
-  // React.useEffect(() => {
-  //   if(is_edit && !_review) {
-  //     window.alert("포스트 정보가 없어요!");
-  //     history.goBack();
-  //   }
-
-  //   // if(is_edit) {
-  //   //   dispatch(imageActions.setPreview(_post.image_url))
-  //   // }
-  // }, []);
   
   const addReview = () => {
     if(title === "" || comment === "") {
@@ -63,7 +60,6 @@ const ReviewWrite = () => {
       comment,
     ))
   };
-
    return (
     <React.Fragment>
       <CommentContainer>
@@ -71,15 +67,15 @@ const ReviewWrite = () => {
         <Info>작성 시 유의 사항</Info>
         <Line />
         <ImagWrap>
-          <ProductImg>상품 사진</ProductImg>
-          <ProductDesc>상품이름</ProductDesc>
+          <ProductImg><img style={{width: "145px"}} src={detail_post.image}/></ProductImg>
+          <ProductDesc>{detail_post.title}</ProductDesc>
         </ImagWrap>
         <WriteWrap>
           <TitleWrap>
             <CommentTitle style={{ height: "50px" }}>제목</CommentTitle>
             <CommentTitleBorder1>
               <CommentTitleInput 
-                value={title}
+                defaultValue={title}
                 onChange={(e) => {
                   setTitle(e.target.value)
                   // console.log(title)
@@ -93,7 +89,7 @@ const ReviewWrite = () => {
             </CommentTextTitle>
             <CommentTitleBorder2>
               <CommentTextInput
-                value={comment}
+                defaultValue={comment}
                 onChange={(e) => {
                   setComment(e.target.value)
                   // console.log(comment)
@@ -194,13 +190,6 @@ const WriteWrap = styled.div`
   width: 820px;
 `;
 
-const ImagWrap = styled.div`
-  width: 820px;
-  height: 190px;
-  overflow: hidden;
-  padding: 20px 15px;
-`;
-
 const Info = styled.span`
   display: flex;
   justify-content: center;
@@ -223,25 +212,42 @@ const Line = styled.span`
   margin-top: -2px;
 `;
 
+const ImagWrap = styled.div`
+  width: 790px;
+  height: 190px;
+  overflow: hidden;
+  padding: 20px 15px;
+  /* background-color: pink; */
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+`;
+
 const ProductImg = styled.div`
-  width: 80px;
+  width: 300px;
   margin-right: 32px;
-  display: block;
-  height: 52px;
-  margin-top: 25px;
-  border: 1px solid red;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* background-color: yellow; */
 `;
 
 const ProductDesc = styled.div`
   padding-top: 4px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  margin-left: -290px;
-  font-size: 16px;
+  margin-left: -170px;
+
+  font-size: 20px;
   color: #000;
   line-height: 24px;
   font-weight: 500;
   letter-spacing: 0.01em;
+  /* background-color: green; */
+  width: 650px;
 `;
 
 const CommentTitleWrap = styled.div`

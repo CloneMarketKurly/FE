@@ -4,8 +4,7 @@ import { useHistory } from "react-router-dom";
 import ReviewDetail from "./ReviewDetail";
 
 // 리덕스관련
-import { useDispatch, useSelector } from "react-redux";
-import { actionCreators as postActions } from "../redux/modules/post";
+import { useSelector } from "react-redux";
 
 const ReviewList = (props) => {
   const history = useHistory();

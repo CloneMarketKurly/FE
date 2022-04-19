@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 // 리덕스 관련
-import { useDispatch } from "react-redux";
-import { actionCreators as reviewActions } from "../redux/modules/review";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as reviewActions } from "../redux/modules/post";
 import { getCookie } from "../shared/Cookie";
 import { history } from "../redux/configureStore";
 
@@ -13,6 +13,9 @@ const ReviewDetail = (props) => {
   const dispatch = useDispatch();
   const params = useParams();
   // console.log(props.item)
+
+  const _count = useSelector((state) => state.post.detail_post);
+  // console.log("포스트", _count)
   
   const [clickComment, setClickComment] = useState(false);
   const [count, setCount] = useState(0);
@@ -49,7 +52,7 @@ const ReviewDetail = (props) => {
             paddingRight: "18px",
           }}
         >
-          1
+          {props.item.commentId}
         </CommentData>
         <CommentData
           style={{
@@ -82,7 +85,7 @@ const ReviewDetail = (props) => {
             textAlign: "center",
           }}
         >
-          2021.02.02
+          {props.item.modifiedAt}
         </CommentData>
         <CommentData
           style={{
@@ -136,7 +139,7 @@ const ReviewDetail = (props) => {
           <HelpWrap>
           <HelpButton
             onClick={() => {
-              dispatch(reviewActions.helpReviewAC(commentId))
+              dispatch(reviewActions.helpReviewAC(itemId, commentId))
             }}
           >
             도움이 돼요&nbsp;{helpCnt}

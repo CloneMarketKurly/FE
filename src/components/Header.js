@@ -4,22 +4,20 @@ import { Grid, Text } from "../elements/Index";
 import { BsList, BsCart2, BsHeart, BsGeoAlt } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
 import { getCookie } from "../shared/Cookie";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { actionCreators } from "../redux/modules/user";
 
 const Header = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  // const userId = useSelector((state) => state.user.userInfo.userId);
-  // console.log(userId);
   const is_login = getCookie("is_login");
   const is_token = getCookie("Authorization");
   console.log(is_login);
   console.log(is_token);
 
   if (is_login && is_token) {
-    const userId = getCookie("userId");
+    const userName = getCookie("userName");
     return (
       <React.Fragment>
         <Grid width="auto" is_flex>
@@ -30,7 +28,9 @@ const Header = () => {
                 <Text color="black">배송안내 ></Text>
               </TextSt>
               <TextSt>
-                <Text color="black">{userId}님 환영합니다! |</Text>
+                <Text color="black">
+                  <b>{userName}</b>님 환영합니다! |
+                </Text>
                 <Text
                   color="black"
                   onClick={() => {
@@ -229,14 +229,6 @@ const BottomSt = styled.ul`
       text-decoration: underline;
     }
   }
-
-  /* & .all-category::before {
-    content: url("https://res.kurly.com/pc/service/common/1908/ico_gnb_all_off.png")
-      no-repeat;
-    position: relative;
-    top: 2px;
-    margin-right: 10px;
-  } */
 `;
 
 export default Header;

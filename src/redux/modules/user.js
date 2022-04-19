@@ -2,6 +2,7 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { setCookie, getCookie, deleteCookie } from "../../shared/Cookie";
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 
 // 액션
 const LOG_IN = "LOG_IN";
@@ -50,6 +51,7 @@ const signUpDB = (payload) => {
 };
 const loginDB = (userId, password) => {
   console.log(userId, password);
+
   return function (dispatch, getState, { history }) {
     axios
       .post("http://3.37.89.93/user/login", {
@@ -57,17 +59,25 @@ const loginDB = (userId, password) => {
         password: password,
       })
       .then((response) => {
+        //토큰만 걸러내기
         console.log(response.headers.authorization.split("BEARER")[1]);
-        console.log(response);
+        //받아온 토큰 속에서 유저네임 찾아내기!
+        const DecodedToken = jwtDecode(
+          response.headers.authorization.split("BEARER")[1]
+        );
+        console.log(DecodedToken.USER_NAME);
+
         setCookie(
           "Authorization",
           response.headers.authorization.split("BEARER")[1]
         );
         setCookie("userId", userId);
+        setCookie("userName", DecodedToken.USER_NAME);
         dispatch(
           logIn({
             is_login: true,
             userId: userId,
+            userName: DecodedToken.USER_NAME,
           })
         );
 

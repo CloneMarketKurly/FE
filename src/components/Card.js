@@ -1,11 +1,10 @@
-import React from 'react'
-import styled from 'styled-components'
-import { history } from '../redux/configureStore'
+import React from "react";
+import styled from "styled-components";
+import { history } from "../redux/configureStore";
 
 const Card = (props) => {
-
   // console.log(props.item)
-  
+
   return (
     <React.Fragment>
       <DivSt
@@ -16,16 +15,32 @@ const Card = (props) => {
       >
         <CardSt>
           <ImageSt>
-            <img style={{width: "267px", height: "320px"}}  src={props.item.image}/>
+            <img
+              style={{ width: "267px", height: "320px" }}
+              src={props.item.image}
+            />
           </ImageSt>
-          <h3 style={{marginLeft: "4px", fontSize: "16px"}}>{props.item.title}</h3>
-          <span style={{marginLeft: "4px", fontSize: "16px", color: "#FA622F"}}>7%</span>&nbsp;
-          <span style={{marginLeft: "4px", fontSize: "16px"}}>{props.item.price}원</span>
+          <h3 style={{ marginLeft: "4px", fontSize: "16px" }}>
+            {props.item.title}
+          </h3>
+          <span
+            style={{ marginLeft: "4px", fontSize: "16px", color: "#FA622F" }}
+          >
+            7%
+          </span>
+          &nbsp;
+          <span style={{ marginLeft: "4px", fontSize: "16px" }}>
+            {" "}
+            {Number(props.item.price)
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            원
+          </span>
         </CardSt>
       </DivSt>
     </React.Fragment>
-  )
-}
+  );
+};
 
 const DivSt = styled.div`
   width: 68%;
@@ -33,8 +48,7 @@ const DivSt = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-
-`
+`;
 
 const CardSt = styled.div`
   /* background-color: gray; */
@@ -46,14 +60,13 @@ const CardSt = styled.div`
   padding: 0px 9px;
   background-repeat: no-repeat;
   background-size: cover;
-`
+`;
 
 const ImageSt = styled.div`
   /* background-color: yellow; */
   width: 100%;
   height: 320px;
   margin: auto;
-`
-
+`;
 
 export default Card;

@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import ReviewList from "./ReviewList";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const DetailItem = (props) => {
-
+  const history = useHistory();
   const dispatch = useDispatch();
   const params = useParams();
 
@@ -20,19 +21,40 @@ const DetailItem = (props) => {
     // 각각의 상세페이지 로드시 itemId 값에 맞는 상세페이지 로드
     dispatch(postActions.getDetailAC(itemId));
   }, []);
+  //수량체크 및 가격반영
+  const [num, setNum] = useState(1);
+  const upCount = () => {
+    setNum(num + 1);
+  };
+  const downCount = () => {
+    setNum(num > 0 ? num - 1 : 0);
+  };
+  const value = (e) => setNum(Number(e.target.value));
+  //총합계구하기
+  const price = detail_post.price;
+  const setPrice = num * price;
 
   return (
     <React.Fragment>
       <SectionView>
         <ImgWrap>
           {/* item.image */}
-          <img style={{width: "416px", height: "538"}} src={detail_post.image}></img>
+          <img
+            style={{ width: "416px", height: "538" }}
+            src={detail_post.image}
+          ></img>
           <TitleWrap>
             {/* item.title */}
             <Name>{detail_post.title}</Name>
             {/* item.des */}
             <Short>{detail_post.des}</Short>
-            <Price>{detail_post.price}원</Price>
+            <Price>
+              {Number(detail_post.price)
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              원
+            </Price>
+            {/* 상품금액을 불러오고, 1,000과 같이 3번째 자리에 쉼표(',')를 넣어줘요! */}
 
             <InfoWrap>
               <dl className="list">
@@ -61,9 +83,7 @@ const DetailItem = (props) => {
               </dl>
               <dl className="list">
                 <dt className="tit">안내사항</dt>
-                <dd className="desc">
-                 {detail_post.promise}
-                </dd>
+                <dd className="desc">{detail_post.promise}</dd>
               </dl>
             </InfoWrap>
           </TitleWrap>
@@ -74,14 +94,11 @@ const DetailItem = (props) => {
               <span className="count">
                 <button
                   className="down btn"
-                  // onClick={downCount}
-                  // disabled={count < 2}
+                  onClick={downCount}
+                  disabled={num < 2}
                 ></button>
-                <input className="inp" />
-                {/* </span>onChange={value} value={count}> */}
-
-                <button className="up btn" />
-                {/* onClick={upCount}></button> */}
+                <input className="inp" onChange={value} value={num} />
+                <button className="up btn" onClick={upCount}></button>
               </span>
             </Option>
           </BoxSelect>
@@ -90,34 +107,50 @@ const DetailItem = (props) => {
         <Total>
           <div className="price">
             <strong>총 상품금액 :</strong>
-            <span className="num">11,900</span>
-            {/* 금액 " , " 를 사용 : toLocalString() 사용 -> 주의점 : Number.prototype.toLocaleString() 이기때문에 꼭 Number()로 타입변경  */}
+            <span className="num">
+              {Number(setPrice)
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              {/* 상품금액을 불러오고, 1,000과 같이 3번째 자리에 쉼표(',')를 넣어줘요!  */}
+            </span>
+
             <span className="won">원</span>
           </div>
         </Total>
 
         <BtnWrap>
-          <button className="btn">장바구니 담기</button>
+          <button
+            className="btn"
+            onClick={() => {
+              history.push("/cart");
+            }}
+          >
+            장바구니 담기
+          </button>
         </BtnWrap>
 
-        <div style={{
-          display: "flex",
-          flexDirection: "colum",
-          justifyContent: "center",
-          width: "1000px",
-          height: "50px",
-          fontSize: "30px",
-        }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "colum",
+            justifyContent: "center",
+            width: "1000px",
+            height: "50px",
+            fontSize: "30px",
+          }}
+        >
           중간 미들 헤더 들어갈 자리
         </div>
 
-        <div style={{
-          display: "flex",
-          flexDirection: "colum",
-          justifyContent: "center",
-          width: "1000px",
-        }}>
-          <img style={{width: "100%"}} src={detail_post.detail_Image} />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "colum",
+            justifyContent: "center",
+            width: "1000px",
+          }}
+        >
+          <img style={{ width: "100%" }} src={detail_post.detail_Image} />
         </div>
       </SectionView>
 

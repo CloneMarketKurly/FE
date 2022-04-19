@@ -16,19 +16,13 @@ const initialState = {
   detail_post : [],
 };
 
-const initialPost = [{
-
-}]
-
 // 액션 생성 함수
 const getPost = createAction(GET_POST, (post) => ({post}));
 const getDetail = createAction(GET_DETAIL, (detail_post) => ({detail_post}));
-// const addTodo = createAction(ADD_TODO, (post_list) => ({post_list}));
-// const deleteTodo = createAction(DELETE_TODO, (planId) => ({ planId }));
-// const editTodo = createAction(EDIT_TODO, (planId, post_list) => ({planId, post_list}));
-
 
 // 미들웨어
+
+// 메인페이지 크롤링 로드
 const getPostAC = () => {
   let myToken = getCookie("Authorization")
   return function (dispatch, getState, {history}) {
@@ -48,6 +42,7 @@ const getPostAC = () => {
   }
 }
 
+// 상품 상세페이지 크롤링 로드
 const getDetailAC = (itemId) => {
   let myToken = getCookie("Authorization")
   return function (dispatch, getState, {history}) {

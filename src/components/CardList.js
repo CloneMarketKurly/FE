@@ -19,8 +19,8 @@ import "../css/swiperCss.css";
 
 // 카드 리스트 + 아래쪽 카드 고정값
 const FixedImg = (props) => {
-  const dispatch = useDispatch();
 
+  // 리덕스에 저장된 post를 가져온다
   const all_list = useSelector((state) => state.post.post)
 
   return (

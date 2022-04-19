@@ -8,7 +8,7 @@ import { actionCreators as postActions } from "../redux/modules/post";
 const Main = (props) => {
   const dispatch = useDispatch();
 
-
+  // 메인페이지 로드
   React.useEffect(() => {
     dispatch(postActions.getPostAC());
   }, []);

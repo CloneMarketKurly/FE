@@ -10,6 +10,7 @@ const Card = (props) => {
     <React.Fragment>
       <DivSt
         onClick={() => {
+          // CardList에서 props로 넘겨받은 item.id로 상세페이지 이동하기
           history.push(`/detail/${props.item.id}`);
         }}
       >

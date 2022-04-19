@@ -8,6 +8,7 @@ const SET_REVIEW = "SET_REVIEW";
 const ADD_REVIEW = "ADD_REVIEW";
 const EDIT_REVIEW = "EDIT_REVIEW";
 const DELETE_REVIEW = "DELETE_REVIEW";
+const HELP_REVIEW = "HELP_REVIEW";
 
 // 초기값
 const initialState = {
@@ -19,6 +20,7 @@ const getReview = createAction(SET_REVIEW, (comment_list) => ({comment_list}));
 const addReview = createAction(ADD_REVIEW, (comment_list) => ({comment_list}));
 const deleteReview = createAction(DELETE_REVIEW, (comment_list, commentId) => ({ comment_list, commentId }));
 const editReview = createAction(EDIT_REVIEW, (itemId, comment_list) => ({itemId, comment_list}));
+const helpReview = createAction(HELP_REVIEW, (commentId) => ({commentId}));
 
 
 // 미들웨어
@@ -95,6 +97,27 @@ const deleteReviewAC = (commentId) => {
   }
 }
 
+const helpReviewAC = (commentId) => {
+  console.log("숫자세기", commentId)
+  let myToken = getCookie("Authorization")
+  // let userId = getCookie("userId")
+  return function (dispatch, getState, {history}) {
+    axios.post(`http://3.37.89.93/item/details/${commentId}/help`, {
+
+    },
+    {headers: { 'Authorization' : `Bearer ${myToken}`}}
+    )
+    .then((res) => {
+      console.log(res)
+      dispatch(helpReview(commentId))
+      // history.replace(`/detail/${itemId}`)
+    })
+    .catch(error => {
+      console.log("서버에러", error)
+    })
+  }
+}
+
 // 리듀서
 export default handleActions(
   {
@@ -104,8 +127,8 @@ export default handleActions(
     }),
 
     [ADD_REVIEW]: (state, action) =>
-
     produce(state, (draft) => {
+      console.log(state)
       draft.comment.unshift(action.payload.comment_list);
     }),
 
@@ -121,6 +144,12 @@ export default handleActions(
         // console.log(action.payload.planId)
         draft.comment = draft.comment.filter((p) =>  p.commentId === action.payload.commentId);
       }),
+    [HELP_REVIEW]: (state, action) =>
+      produce(state, (draft) => {
+        let idx = draft.comment.findIndex((p) => p.commentId === action.payload.commentId
+        );
+        draft.comment[idx] = draft.comment[idx] + 1;
+    }),
   },
   initialState
 );
@@ -131,10 +160,11 @@ const actionCreators = {
   addReview,
   editReview,
   deleteReview,
+  helpReview,
   addReviewAC,
   editReviewAC,
-  deleteReviewAC
-
+  deleteReviewAC,
+  helpReviewAC,
 };
 
 export { actionCreators };

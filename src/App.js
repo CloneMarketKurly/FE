@@ -15,19 +15,11 @@ import Signup from "./pages/Signup";
 import Header from "./components/Header";
 import ReviewWrite from "./pages/ReviewWrite";
 import ReviewDetail from "./pages/ReviewDetail";
+import Cart from "./pages/Cart";
 
 import Footer from "./components/Footer";
 
 function App() {
-  const dispatch = useDispatch();
-  const is_login = useSelector((state) => state.user.is_login);
-  const is_token = getCookie("Authorization") ? true : false;
-  React.useEffect(() => {
-    if (is_token) {
-      dispatch(actionCreators.loginCheckDB());
-    }
-  });
-
   return (
     <React.Fragment>
       <ConnectedRouter history={history}>
@@ -39,6 +31,7 @@ function App() {
         <Route path="/reviewDetail" exact component={ReviewDetail} />
         <Route path="/reviewWrite/:itemId" exact component={ReviewWrite} />
         <Route path="/reviewWrite/:itemId/:commentId" exact component={ReviewWrite} />
+        <Route path="/cart" exact component={Cart} />
         <Footer />
       </ConnectedRouter>
     </React.Fragment>

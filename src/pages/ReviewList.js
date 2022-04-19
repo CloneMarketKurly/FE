@@ -2,11 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import ReviewDetail from "./ReviewDetail";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { actionCreators as postActions } from "../redux/modules/post";
 
-// import Comment from './Comment';
+// 리덕스관련
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as postActions } from "../redux/modules/post";
 
 const ReviewList = (props) => {
   const history = useHistory();

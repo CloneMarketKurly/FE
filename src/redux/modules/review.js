@@ -11,16 +11,8 @@ const DELETE_REVIEW = "DELETE_REVIEW";
 
 // 초기값
 const initialState = {
-  comment : [
-    {
-
-  }
-  ],
+  comment : [],
 };
-
-const initialPost = [{
-
-}]
 
 // 액션 생성 함수
 const getReview = createAction(SET_REVIEW, (comment) => ({comment}));
@@ -31,6 +23,7 @@ const editReview = createAction(EDIT_REVIEW, (itemId, comment_list) => ({itemId,
 
 // 미들웨어
 
+// 리뷰 추가하기
 const addReviewAC = (itemId, title, comment) => {
 
   console.log("추가하기 itemId" + itemId)
@@ -54,7 +47,9 @@ const addReviewAC = (itemId, title, comment) => {
   }
 }
 
+// 리뷰 수정하기
 const editReviewAC = (title, content, stars ) => {
+  // 코멘트 아이디를 받아와야함
   return function (dispatch, getState, {history}) {
     axios.post("", {
 
@@ -70,28 +65,20 @@ const editReviewAC = (title, content, stars ) => {
   }
 }
 
+// 리뷰 삭제하기
 const deleteReviewAC = (commentId) => {
   let myToken = getCookie("Authorization")
-  console.log("코멘트아이디", commentId)
-  console.log("코멘트아이디", myToken)
-
   return function (dispatch, getState, {history}) {
     if (!commentId) window.alert("댓글 정보가 없어요! :(");
-    // console.log(commentId);
     axios.delete(`http://3.37.89.93/item/details/comments/${commentId}`,
     {headers: { 'Authorization' : `Bearer ${myToken}`}},
-    {
-      // commentId: commentId
-    },
-    
     )
     .then((res) => {
       console.log(res)
-      dispatch(deleteReview(commentId))
-      
+      dispatch(deleteReview(commentId))  
     })
     .catch(error => {
-      console.log("어림없어", error)
+      console.log("리뷰삭제하기 에러", error)
     })
   }
 }

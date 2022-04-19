@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { actionCreators as reviewActions } from "../redux/modules/review";
-
+import { history } from "../redux/configureStore";
 
 
 const ReviewDetail = (props) => {
@@ -11,14 +11,16 @@ const ReviewDetail = (props) => {
   const [count, setCount] = useState(0);
 
   // console.log("리뷰 상세정보", props.item)
-
+  // 리뷰작성에서 필요한 commentId는 props로 넘겨받은 item의 commentId
   let commentId = props.item.commentId
-  // console.log(commentId)
+  let itemId = props.item.itemId
 
   const deleteReview = () => {
+    // 리뷰를 삭제할 때 commentId를 찾아 삭제할 예정
     dispatch(reviewActions.deleteReviewAC(
       commentId
     ))
+    history.replace(`/detail/${itemId}`)
   }
 
   return (

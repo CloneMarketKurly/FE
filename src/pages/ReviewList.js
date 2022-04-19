@@ -10,13 +10,17 @@ import { actionCreators as postActions } from "../redux/modules/post";
 
 const ReviewList = (props) => {
   const history = useHistory();
-  const itemId = props.itemId;
-  // console.log("props.itemId", itemId)
 
+  // itemId는 Detail 페이지에서 넘겨받은 props의 itemId
+  const itemId = props.itemId;
+
+  // 리덕스에 저장된 상세페이지 가져오기
   const detail_post = useSelector((state) => state.post.detail_post);
-  // console.log("detail_comment", detail_post.comments);
+  
+  // 서버에서 댓글 정보를 보낼 때 상세페이지 로드에 같이 담아 보내줬기 때문에 detail_post에서 꺼내쓴다.
+  // review는 리뷰정보들
   const review = detail_post.comments
-  // console.log("리뷰", review)
+
 
   return (
     <>
@@ -108,14 +112,9 @@ const ReviewList = (props) => {
             </InfoItem>
           </TableInfo>
           {review && review.map((item, idx) => {
+            // ReviewDetail 페이지에 item값을 props로 넘겨준다.
             return <ReviewDetail key={idx} item={item}/>
           })}
-          {/* Commnet List
-          { comment_list &&
-            comment_list.map((c, i) =>{
-              return <Comment key={i} {...c} product_name={props.product_name} />
-            })
-          } */}
         </CommentTable>
         <ReveiwButtonWrap>
           <ReviewButton
@@ -123,6 +122,8 @@ const ReviewList = (props) => {
               window.alert(
                 "상품후기는 상품을 구매하시고 배송완료된 회원 분만 한 달 내 작성 가능합니다."
               );
+
+              // 후기 작성시 itemId 값을 가지고 후기 작성페이지로 이동
               history.push(`/reviewWrite/${itemId}`);
             }}
           >

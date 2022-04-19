@@ -9,17 +9,18 @@ import { actionCreators as reviewActions } from "../redux/modules/review";
 
 const ReviewWrite = () => {
   const dispatch = useDispatch();
-  const params = useParams();
 
+  // params의 itemId를 가지고 온다.
+  const params = useParams();
   const itemId = params.itemId;
   // console.log(itemId)
-
 
   const [title, setTitle] = useState("")
   const [comment, setComment] = useState("")
   const [image, setImage] = useState("선택한 파일X")
   
   const addTitle = () => {
+    // 리뷰를 추가할 때 addReviewAc로 itemId, title, comment를 넘긴다.
     dispatch(reviewActions.addReviewAC(
       itemId,
       title,

@@ -1,19 +1,28 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+
+// 리덕스 관련
+import { useDispatch } from "react-redux";
 import { actionCreators as reviewActions } from "../redux/modules/review";
+import { getCookie } from "../shared/Cookie";
 import { history } from "../redux/configureStore";
 
 
 const ReviewDetail = (props) => {
   const dispatch = useDispatch();
+  const params = useParams();
+  
   const [clickComment, setClickComment] = useState(false);
   const [count, setCount] = useState(0);
 
   // console.log("리뷰 상세정보", props.item)
   // 리뷰작성에서 필요한 commentId는 props로 넘겨받은 item의 commentId
   let commentId = props.item.commentId
-  let itemId = props.item.itemId
+  let itemId = params.itemId
+  let user = props.item.userId
+  const userId = getCookie("userId");
+  // console.log(user, userId)
 
   const deleteReview = () => {
     // 리뷰를 삭제할 때 commentId를 찾아 삭제할 예정
@@ -101,22 +110,39 @@ const ReviewDetail = (props) => {
             </Detail>
           </DetailWrap>
 
-          <HelpWrap>
-            <HelpButton
-              onClick={() => {
-                setCount(+1);
-              }}
-            >
-              도움이 돼요{count}
-            </HelpButton>
-          </HelpWrap>
+        {userId === user ? 
+          <div style={{display: "flex", flexDirection: "row", justifyContent: "right", alignItems: "right"}}>
           <DeleteWrap>
-            <DeleteButton
-              onClick={deleteReview}
-            >
-              삭제하기
-            </DeleteButton>
-          </DeleteWrap>
+              <DeleteButton
+                onClick={() => {
+                  history.push(`/reviewWrite/${itemId}/${commentId}`)
+                }}
+              >
+                수정
+              </DeleteButton>
+            </DeleteWrap>
+            <DeleteWrap>
+              <DeleteButton
+                onClick={deleteReview}
+              >
+                삭제
+              </DeleteButton>
+            </DeleteWrap>
+          </div>
+          :
+          <HelpWrap>
+          <HelpButton
+            onClick={() => {
+              setCount(+1);
+            }}
+          >
+            도움이 돼요{count}
+          </HelpButton>
+        </HelpWrap>
+      }
+        
+
+
         </CommentDetail>
       )}
     </>
@@ -179,6 +205,7 @@ const DeleteWrap = styled.div`
 const DeleteButton = styled.button`
   padding: 0px 15px;
   min-width: 105px;
+  margin-right: 2px;
   height: 30px;
   font-size: 12px;
   font-weight: 300;

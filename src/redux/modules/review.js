@@ -15,9 +15,9 @@ const initialState = {
 };
 
 // 액션 생성 함수
-const getReview = createAction(SET_REVIEW, (comment) => ({comment}));
+const getReview = createAction(SET_REVIEW, (comment_list) => ({comment_list}));
 const addReview = createAction(ADD_REVIEW, (comment_list) => ({comment_list}));
-const deleteReview = createAction(DELETE_REVIEW, (comment, commentId) => ({ comment, commentId }));
+const deleteReview = createAction(DELETE_REVIEW, (comment_list, commentId) => ({ comment_list, commentId }));
 const editReview = createAction(EDIT_REVIEW, (itemId, comment_list) => ({itemId, comment_list}));
 
 
@@ -25,6 +25,9 @@ const editReview = createAction(EDIT_REVIEW, (itemId, comment_list) => ({itemId,
 
 // 리뷰 추가하기
 const addReviewAC = (itemId, title, comment) => {
+  // console.log(itemId)
+  // console.log(title)
+  // console.log(comment)
 
   console.log("추가하기 itemId" + itemId)
   let myToken = getCookie("Authorization")
@@ -40,6 +43,7 @@ const addReviewAC = (itemId, title, comment) => {
     .then((res) => {
       console.log(res)
       dispatch(addReview({userId, title, comment}))
+      history.replace(`/detail/${itemId}`)
     })
     .catch(error => {
       console.log("서버에러", error)
@@ -48,19 +52,27 @@ const addReviewAC = (itemId, title, comment) => {
 }
 
 // 리뷰 수정하기
-const editReviewAC = (title, content, stars ) => {
-  // 코멘트 아이디를 받아와야함
+const editReviewAC = (itemId, commentId, title, comment) => {
+  console.log(commentId)
+  console.log(title)
+  console.log(comment)
+  let myToken = getCookie("Authorization")
+  let userId = getCookie("userId")
   return function (dispatch, getState, {history}) {
-    axios.post("", {
-
+    axios.put(`http://3.37.89.93/item/details/comments/${commentId}`, {
+      userId: userId,
+      title: title,
+      comment: comment,
     },
-    // {headers: { 'Authorization' : `Bearer ${myToken}`}}
+    {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
-    .then(
-      dispatch(addReview({title, content, stars}))
-    )
+    .then((res) => {
+      console.log(res)
+      dispatch(editReview({userId, title, comment}))
+      history.replace(`/detail/${itemId}`)
+    })
     .catch(error => {
-      console.log("어림없어", error)
+      console.log("수정노노노", error)
     })
   }
 }
@@ -100,14 +112,14 @@ export default handleActions(
     [DELETE_REVIEW]: (state, action) =>
       produce(state, (draft) => {
         // console.log(action.payload.commentId)
-        draft.comment = draft.comment.filter((p) =>  p.id !== action.payload.commentId);
+        draft.comment = draft.comment.filter((p) =>  p.commentId !== action.payload.commentId);
         window.location.reload()
       }),
 
     [EDIT_REVIEW]: (state, action) =>
       produce(state, (draft) => {
         // console.log(action.payload.planId)
-        // draft.todos.content = draft.todos.content.filter((p) =>  p.planId === action.payload.planId);
+        draft.comment = draft.comment.filter((p) =>  p.commentId === action.payload.commentId);
       }),
   },
   initialState

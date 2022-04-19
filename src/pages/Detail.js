@@ -6,17 +6,18 @@ import { actionCreators as postActions } from "../redux/modules/post";
 import { useDispatch, useSelector } from "react-redux";
 
 const DetailItem = (props) => {
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const params = useParams();
 
+  // itemId는 useParams를 이용하여 Url에서 떼어온 값
   const itemId = params.itemId;
-  // console.log("itemId", itemId)
 
+  // 리덕스에 저장된 상세페이지 리스트 로드
   const detail_post = useSelector((state) => state.post.detail_post);
-  // console.log("detail_post", detail_post);
 
   React.useEffect(() => {
+    // 각각의 상세페이지 로드시 itemId 값에 맞는 상세페이지 로드
     dispatch(postActions.getDetailAC(itemId));
   }, []);
 
@@ -120,7 +121,7 @@ const DetailItem = (props) => {
         </div>
       </SectionView>
 
-      {/* item.detailImage */}
+      {/* 리뷰리스트 컴포넌트에 itemId를 props로 넘기기 */}
       <ReviewList itemId={itemId} />
     </React.Fragment>
   );

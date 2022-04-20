@@ -21,7 +21,7 @@ const Footer = () => {
               </div>
               <div>
                 <button>1:1 문의</button>
-                <span style={{fontSize: "15px", marginLeft: "10px", color: "gray"}}>24시간 접수 가능 (고객센터 운영시간에 순차적으로 답변해드리겠습니다.</span>
+                <span style={{fontSize: "15px", marginLeft: "10px", color: "gray"}}>24시간 접수 가능</span>
               </div>
               <div>
                 <button>대량주문 문의</button>
@@ -82,6 +82,7 @@ const GridSt = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
+  font-family: 'Noto Sans KR', sans-serif;
 `
 
 const WrapSt = styled.div`

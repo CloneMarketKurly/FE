@@ -6,18 +6,25 @@ import { useHistory } from "react-router-dom";
 import { getCookie } from "../shared/Cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../redux/modules/user";
+import "../App.css";
 
 const Header = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+
+  // 리덕스에 저장된 유저 정보 가져오기, 근데 여기서는 사용하지 않음
   const _user = useSelector((state) => state.user.user);
 
-  console.log(_user)
-
+  // 로그인 확인을 위함
   const is_login = getCookie("is_login");
   const is_token = getCookie("Authorization");
-  console.log(is_login);
-  console.log(is_token);
+
+  // 메뉴 토글 오픈
+  const [isOpen, setMenu] = React.useState(false);  // 메뉴의 초기값을 false로 설정해줌
+  
+  const toggleMenu = () => {
+      setMenu(isOpen => !isOpen);
+    }
 
   if (is_login && is_token) {
     const userName = getCookie("userName");
@@ -43,7 +50,7 @@ const Header = () => {
                   &nbsp;로그아웃 |
                 </Text>
 
-                <Text color="black">&nbsp;고객센터▼</Text>
+                <Text color="black">&nbsp;고객센터 ▼</Text>
               </TextSt>
             </BodySt>
             <ImgSt>
@@ -57,7 +64,7 @@ const Header = () => {
               </div>
             </ImgSt>
             <BottomSt>
-              <BsList style={{ margin: "0px 0px 0px 20px" }} />
+              <BsList onClick={toggleMenu} style={{ margin: "0px 0px 0px 20px" }} />
               <li>전체 카테고리</li>
               <li>신상품</li>
               <li>베스트</li>
@@ -72,6 +79,22 @@ const Header = () => {
                 <BsHeart style={{ margin: "5px 0px 0px 10px" }} />
                 <BsCart2 style={{ margin: "0px 0px 2px 20px" }} />
               </div>
+
+              {/* 삼항연산자 true 일 때 클래스명 show-menu, false일때 hide-menu */}
+              <ul className={isOpen ? "show-menu" : "hide-menu"}> 
+                <div >채소</div>
+                <div >과일·견과·쌀</div>
+                <div >수산·해산·건어물</div>
+                <div >정육·계란</div>
+                <div >국·반찬·메인요리</div>
+                <div >샐러드·간편식</div>
+                <div >면·양념·오일</div>
+                <div >생수·음료·우유·커피</div>
+                <div >간식·과자·떡</div>
+                <div >베이커리·치즈·델리</div>
+                <div >건강식품</div>
+                <div >와인</div>
+              </ul>
             </BottomSt>
           </HeaderSt>
         </Grid>
@@ -120,7 +143,7 @@ const Header = () => {
             </div>
           </ImgSt>
           <BottomSt>
-            <BsList style={{ margin: "0px 0px 0px 20px" }} />
+            <BsList onClick={toggleMenu} style={{ margin: "0px 0px 0px 20px" }} />
             <li>전체 카테고리</li>
             <li>신상품</li>
             <li>베스트</li>
@@ -135,6 +158,22 @@ const Header = () => {
               <BsHeart style={{ margin: "5px 0px 0px 10px" }} />
               <BsCart2 style={{ margin: "0px 0px 2px 20px" }} />
             </div>
+
+              {/* 삼항연산자 true 일 때 클래스명 show-menu, false일때 hide-menu */}
+              <ul className={isOpen ? "show-menu" : "hide-menu"}> 
+                <div >채소</div>
+                <div >과일·견과·쌀</div>
+                <div >수산·해산·건어물</div>
+                <div >정육·계란</div>
+                <div >국·반찬·메인요리</div>
+                <div >샐러드·간편식</div>
+                <div >면·양념·오일</div>
+                <div >생수·음료·우유·커피</div>
+                <div >간식·과자·떡</div>
+                <div >베이커리·치즈·델리</div>
+                <div >건강식품</div>
+                <div >와인</div>
+              </ul>
           </BottomSt>
         </HeaderSt>
       </Grid>
@@ -146,6 +185,7 @@ const Header = () => {
 const HeaderSt = styled.div`
   width: 1500px;
   margin: auto;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const BodySt = styled.div`

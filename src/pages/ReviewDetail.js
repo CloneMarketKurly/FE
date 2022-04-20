@@ -24,15 +24,6 @@ const ReviewDetail = (props) => {
   let user = props.item.userId
   let helpCnt = props.item.helpCnt
 
-  // const likeCheck = useSelector((state) => state.post.detail_post.comments);
-  // // console.log("도움이돼요", likeCheck)
-
-  // const _helpCheck = likeCheck.find((p) => p.helpCheck === true)
-  // console.log("헬프", _helpCheck)
-
-  // const ChangeBtn = _helpCheck !== undefined ? _helpCheck.helpCheck : null;
-  // console.log("버튼바꿔", ChangeBtn)
-
   const userId = getCookie("userId");
   // console.log(user, userId)
 
@@ -115,13 +106,13 @@ const ReviewDetail = (props) => {
         <CommentDetail>
           <DetailWrap>
             <DetailTitle>{props.item.title}</DetailTitle>
-            <DetailImage src={props.item.image} />
-            {/* {props.file ? <DetailImage src={props.file} /> : null} */}
+            <DetailImage src={props.item.image}/>
             <Detail>
               {props.item.comment}
             </Detail>
           </DetailWrap>
 
+        {/* 쿠키에 저장된 userId와 user의 값 비교 */}
         {userId === user ? 
           <div style={{display: "flex", flexDirection: "row", justifyContent: "right", alignItems: "right"}}>
           <DeleteWrap>
@@ -151,29 +142,6 @@ const ReviewDetail = (props) => {
               도움이 돼요&nbsp;{helpCnt}
             </HelpButton>
           </HelpWrap>
-
-          // (ChangeBtn === null ?
-          //   <HelpWrap>
-          //     <HelpButton
-          //     onClick={() => {
-          //       dispatch(reviewActions.helpReviewAC(itemId, commentId))
-          //     }}
-          //   >
-          //       도움이 돼요&nbsp;{helpCnt}
-          //     </HelpButton>
-          //   </HelpWrap>
-          //   :
-          //   <HelpWrap>
-          //     <HelpButton1
-          //     onClick={() => {
-          //       dispatch(reviewActions.helpReviewAC(itemId, commentId))
-          //     }}
-          //   >
-          //       도움이 돼요&nbsp;{helpCnt}
-          //     </HelpButton1>
-          //   </HelpWrap>
-          //   )
-
       }
        </CommentDetail>
       )}
@@ -253,25 +221,13 @@ const HelpWrap = styled.div`
   margin-bottom: 5px;
 `;
 
-const HelpButton1 = styled.button`
-  padding: 0px 15px;
-  min-width: 105px;
-  height: 30px;
-  font-size: 12px;
-  font-weight: 300;
-  line-height: 28px;
-  color: white;
-  border: 1px solid #5f0080;
-  background: purple;
-  cursor: pointer;
-`;
-
 const HelpButton = styled.button`
   padding: 0px 15px;
   min-width: 105px;
   height: 30px;
   font-size: 12px;
-  font-weight: 300;
+  font-weight: 500;
+  font-family: 'Noto Sans KR', sans-serif;
   line-height: 28px;
   color: #5f0080;
   border: 1px solid #5f0080;

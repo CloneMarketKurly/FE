@@ -4,13 +4,22 @@ import axios from "axios";
 import { getCookie } from "../../shared/Cookie";
 
 // 액션
+// 크롤링 데이터 로드
 const GET_POST = "GET_POST";
 const GET_DETAIL = "GET_DETAIL";
+
+// 리뷰 CRUD
 const SET_REVIEW = "SET_REVIEW";
 const ADD_REVIEW = "ADD_REVIEW";
 const EDIT_REVIEW = "EDIT_REVIEW";
 const DELETE_REVIEW = "DELETE_REVIEW";
 const HELP_REVIEW = "HELP_REVIEW";
+
+// 이미지 액션
+const UPLODING = "UPLODING";
+const UPLOAD_IMG = "UPLOAD_IMG";
+const SET_PREVIEW = "SET_PREVIEW";
+
 
 // 초기값
 const initialState = {
@@ -21,11 +30,15 @@ const initialState = {
 // 액션 생성 함수
 const getPost = createAction(GET_POST, (post) => ({post}));
 const getDetail = createAction(GET_DETAIL, (detail_post) => ({detail_post}));
-const getReview = createAction(SET_REVIEW, (comment_list) => ({comment_list}));
+// const getReview = createAction(SET_REVIEW, (comment_list) => ({comment_list}));
 const addReview = createAction(ADD_REVIEW, (comment_list) => ({comment_list}));
 const deleteReview = createAction(DELETE_REVIEW, (commentId) => ({commentId}));
 const editReview = createAction(EDIT_REVIEW, (itemId, comment_list) => ({itemId, comment_list}));
 const helpReview = createAction(HELP_REVIEW, (commentId) => ({commentId}));
+
+const uploading = createAction(UPLODING, (uploading) => ({ uploading }));
+const uploadImg = createAction(UPLOAD_IMG, (image) => ({ image }));
+const setPreview = createAction(SET_PREVIEW, (preview) => ({ preview }));
 
 // 미들웨어
 
@@ -70,27 +83,32 @@ const getDetailAC = (itemId) => {
   }
 }
 
+const addReviewAC = (payload) => {
 
-const addReviewAC = (itemId, title, comment) => {
-  // console.log(itemId)
-  // console.log(title)
-  // console.log(comment)
 
-  console.log("추가하기 itemId" + itemId)
   let myToken = getCookie("Authorization")
-  let userId = getCookie("userId")
   return function (dispatch, getState, {history}) {
-    axios.post(`http://3.37.89.93/item/details/${itemId}/comments`, {
-      userId: userId,
-      title: title,
-      comment: comment,
-    },
-    {headers: { 'Authorization' : `Bearer ${myToken}`}}
+    // formData 형식으로 이미지 전송
+    const formData = new FormData();
+    formData.append("image", payload.file)
+    formData.append("comment",
+      new Blob([JSON.stringify(payload.information)], {
+      type: "application/json",
+    })
+    )
+
+    // console.log(formData)
+    axios.post(`http://3.37.89.93/item/details/${payload.itemId}/comments`, 
+      formData,
+    {headers:{ 
+      "Content-Type": "multipart/form-data",
+      'Authorization' : `Bearer ${myToken}`
+    }}
     )
     .then((res) => {
       console.log(res)
-      dispatch(addReview({userId, title, comment}))
-      history.replace(`/detail/${itemId}`)
+      // dispatch(uploadImg({userId, title, comment}))
+      history.replace(`/detail/${payload.itemId}`)
     })
     .catch(error => {
       console.log("서버에러", error)
@@ -99,24 +117,31 @@ const addReviewAC = (itemId, title, comment) => {
 }
 
 // 리뷰 수정하기
-const editReviewAC = (itemId, commentId, title, comment) => {
-  console.log(commentId)
-  console.log(title)
-  console.log(comment)
+const editReviewAC = (payload) => {
+  console.log("수정하기 payload", payload)
+  console.log(payload.information)
+  console.log(payload.file)
   let myToken = getCookie("Authorization")
   let userId = getCookie("userId")
   return function (dispatch, getState, {history}) {
-    axios.put(`http://3.37.89.93/item/details/comments/${commentId}`, {
-      userId: userId,
-      title: title,
-      comment: comment,
-    },
+
+    const formData = new FormData();
+    formData.append("image", payload.file)
+    formData.append("comment",
+      new Blob([JSON.stringify(payload.information)], {
+      type: "application/json",
+    })
+    )
+
+    axios.put(`http://3.37.89.93/item/details/comments/${payload.commentId}`, 
+      formData
+    ,
     {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
     .then((res) => {
       console.log(res)
-      dispatch(editReview({userId, title, comment}))
-      history.replace(`/detail/${itemId}`)
+      // dispatch(editReview({userId, title, comment}))
+      history.replace(`/detail/${payload.itemId}`)
     })
     .catch(error => {
       console.log("수정노노노", error)
@@ -142,6 +167,7 @@ const deleteReviewAC = (commentId) => {
   }
 }
 
+// 도움이돼요 버튼
 const helpReviewAC = (itemId, commentId) => {
   console.log("숫자세기", commentId)
   let myToken = getCookie("Authorization")
@@ -154,7 +180,7 @@ const helpReviewAC = (itemId, commentId) => {
     )
     .then((res) => {
       console.log(res)
-      dispatch(helpReview(commentId))
+      dispatch(helpReview(res.data))
       // history.replace(`/detail/${itemId}`)
     })
     .catch(error => {
@@ -197,11 +223,19 @@ export default handleActions(
     //   }),
     [HELP_REVIEW]: (state, action) =>
       produce(state, (draft) => {
-        let idx = draft.detail_post.comments.findIndex((p) => p.commentId === action.payload.commentId
-        );
-        console.log("idx", idx)
-        draft.detail_post.comments[idx].commentId = draft.detail_post.comments[idx].commentId + 2;
+        console.log(action.payload.commentId)
+        draft.detail_post = action.payload.commentId
       }),
+    // [UPLOAD_IMG]: (state, action) =>
+    //   produce(state, (draft) => {
+    //     draft.imageUrl = action.payload.imageUrl;
+    //     draft.uploading = false;
+    //     console.log(state, action);
+    // }),
+    [SET_PREVIEW]: (state, action) =>
+      produce(state, (draft) => {
+        draft.preview = action.payload.preview;
+    }),
 
   },
   initialState
@@ -212,13 +246,16 @@ const actionCreators = {
 // export 할 것들
   getPost,
   getDetail,
-  getPostAC,
-  getDetailAC,
-  getReview,
+  uploading,
+  uploadImg,
+  setPreview,
   addReview,
   editReview,
   deleteReview,
   helpReview,
+  getPostAC,
+  getDetailAC,
+  // getReview,
   addReviewAC,
   editReviewAC,
   deleteReviewAC,

@@ -14,9 +14,6 @@ const ReviewDetail = (props) => {
   const params = useParams();
   // console.log(props.item)
 
-  const _count = useSelector((state) => state.post.detail_post);
-  // console.log("포스트", _count)
-  
   const [clickComment, setClickComment] = useState(false);
   const [count, setCount] = useState(0);
 
@@ -26,6 +23,15 @@ const ReviewDetail = (props) => {
   let itemId = params.itemId
   let user = props.item.userId
   let helpCnt = props.item.helpCnt
+
+  // const likeCheck = useSelector((state) => state.post.detail_post.comments);
+  // // console.log("도움이돼요", likeCheck)
+
+  // const _helpCheck = likeCheck.find((p) => p.helpCheck === true)
+  // console.log("헬프", _helpCheck)
+
+  // const ChangeBtn = _helpCheck !== undefined ? _helpCheck.helpCheck : null;
+  // console.log("버튼바꿔", ChangeBtn)
 
   const userId = getCookie("userId");
   // console.log(user, userId)
@@ -109,7 +115,7 @@ const ReviewDetail = (props) => {
         <CommentDetail>
           <DetailWrap>
             <DetailTitle>{props.item.title}</DetailTitle>
-            <DetailImage src="https://img-cf.kurly.com/shop/data/review/20211010/60d32b656996fbf65521863d010c395f.jpg" />
+            <DetailImage src={props.item.image} />
             {/* {props.file ? <DetailImage src={props.file} /> : null} */}
             <Detail>
               {props.item.comment}
@@ -136,15 +142,38 @@ const ReviewDetail = (props) => {
             </DeleteWrap>
           </div>
           :
-          <HelpWrap>
-          <HelpButton
-            onClick={() => {
-              dispatch(reviewActions.helpReviewAC(itemId, commentId))
-            }}
-          >
-            도움이 돼요&nbsp;{helpCnt}
-          </HelpButton>
-        </HelpWrap>
+         <HelpWrap>
+            <HelpButton
+             onClick={() => {
+               dispatch(reviewActions.helpReviewAC(itemId, commentId))
+             }}
+           >
+              도움이 돼요&nbsp;{helpCnt}
+            </HelpButton>
+          </HelpWrap>
+
+          // (ChangeBtn === null ?
+          //   <HelpWrap>
+          //     <HelpButton
+          //     onClick={() => {
+          //       dispatch(reviewActions.helpReviewAC(itemId, commentId))
+          //     }}
+          //   >
+          //       도움이 돼요&nbsp;{helpCnt}
+          //     </HelpButton>
+          //   </HelpWrap>
+          //   :
+          //   <HelpWrap>
+          //     <HelpButton1
+          //     onClick={() => {
+          //       dispatch(reviewActions.helpReviewAC(itemId, commentId))
+          //     }}
+          //   >
+          //       도움이 돼요&nbsp;{helpCnt}
+          //     </HelpButton1>
+          //   </HelpWrap>
+          //   )
+
       }
        </CommentDetail>
       )}
@@ -222,6 +251,19 @@ const DeleteButton = styled.button`
 const HelpWrap = styled.div`
   text-align: right;
   margin-bottom: 5px;
+`;
+
+const HelpButton1 = styled.button`
+  padding: 0px 15px;
+  min-width: 105px;
+  height: 30px;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 28px;
+  color: white;
+  border: 1px solid #5f0080;
+  background: purple;
+  cursor: pointer;
 `;
 
 const HelpButton = styled.button`

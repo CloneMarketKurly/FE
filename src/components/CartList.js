@@ -5,25 +5,29 @@ import { Grid, Text } from "../elements/Index";
 import Modal from "./Address";
 import DetailItem from "../pages/Detail";
 // import { history } from "redux/configStore";
-// import { useHistory } from "react-router";
-// import { useSelector, useDispatch } from "react-redux";
-// import { actionCreators  } from "redux/modules/cart";
+import { useHistory } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
+import { actionCreators } from "../redux/modules/cart";
+import CartListProduct from "./CartListProduct";
 // import cart from "redux/modules/cart";
 
 const CartList = (props) => {
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  // const item_list = useSelector((state) => state.item.list)
+  React.useEffect(() => {
+    dispatch(actionCreators.getCartDB());
+  }, []);
+  //주문한 내용 장바구니애 겟헤오기
+  const item_list = useSelector((state) => state.cart.item.buyItemList);
+  console.log(item_list);
 
-  // React.useEffect(() => {
-  //     dispatch(actionCreators.getItemDB())
-  // }, [])
+  //다음 주소 창 띄우는 모달
   const [modal, setModal] = useState(false);
   const 주소 = localStorage.getItem("address");
   return (
     <React.Fragment>
       <Grid margin="0 auto" width="1035px" borderBottom="1px solid #f2f2f2">
-        <Grid flex_center padding="55px 0 46px">
+        <Grid flex_center padding="55px 0 46px" is_flex>
           <Text bold size="28px">
             장바구니
           </Text>
@@ -35,13 +39,9 @@ const CartList = (props) => {
             borderBottom="1px solid #f2f2f2"
             borderTop="1px solid #f2f2f2"
           >
-            <Text padding="115px 0" margin="0" size="16px" color="#333" bold>
-              장바구니에 담긴 상품이 없습니다
-            </Text>
-            {/* {prod_list.map((p, idx) => {
-                return <CartListProduct key={p.id} {...p} />;
-              })} */}
-            {/* <CartListProduct {...prod_list}></CartListProduct> */}
+            {item_list.map((p, ix) => {
+              return <CartListProduct key={ix} {...p} user={p.user} />;
+            })}
           </Grid>
           <Grid width="290px">
             <Grid
@@ -59,15 +59,6 @@ const CartList = (props) => {
                   배송지
                 </Text>
               </Grid>
-              {/* <Text
-                padding="11px 0 0"
-                margin="0 0 5px 0"
-                bold
-                size="16px"
-                color="#5F0080"
-              >
-                <span>배송지를 입력하고</span>
-              </Text> */}
               <Text margin="0" bold size="16px">
                 {주소}
               </Text>
@@ -110,7 +101,6 @@ const CartList = (props) => {
                 <Text size="16px" margin="0">
                   +3,000원
                 </Text>
-                {/* {sum  '리액트' ? <h1>리액트입니다.</h1> : <h1>리액트가 아닙니다</h1>} */}
               </Grid>
               <Grid
                 is_flex
@@ -150,7 +140,8 @@ const BtnOrder = styled.button`
   width: 100%;
   height: 56px;
   margin: 20px 0 0;
-  background: #ddd;
+  background-color: #5f0081;
+  border: 1px solid #5f0081;
   border: 0;
   text-align: center;
   border-radius: 6px;

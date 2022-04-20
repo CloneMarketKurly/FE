@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import ReviewList from "./ReviewList";
 import { actionCreators as postActions } from "../redux/modules/post";
+import { actionCreators } from "../redux/modules/cart";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -33,6 +34,13 @@ const DetailItem = (props) => {
   //총합계구하기
   const price = detail_post.price;
   const setPrice = num * price;
+
+  const addItem = () => {
+    let ItemId = parseInt(itemId);
+    console.log(ItemId, num);
+    dispatch(actionCreators.addItemDB(ItemId, num));
+    // history.push("/cart");
+  };
 
   return (
     <React.Fragment>
@@ -119,12 +127,7 @@ const DetailItem = (props) => {
         </Total>
 
         <BtnWrap>
-          <button
-            className="btn"
-            onClick={() => {
-              history.push("/cart");
-            }}
-          >
+          <button className="btn" onClick={addItem}>
             장바구니 담기
           </button>
         </BtnWrap>

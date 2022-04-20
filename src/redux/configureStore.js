@@ -7,7 +7,7 @@ import { connectRouter } from "connected-react-router";
 import User from "./modules/user";
 import Post from "./modules/post";
 import Review from "./modules/review";
-import Cart from "../pages/Cart";
+import Cart from "./modules/cart";
 
 // history를 페이지에서 편하게 사용할 수 있도록 준비
 export const history = createBrowserHistory();

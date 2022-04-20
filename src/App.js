@@ -30,8 +30,12 @@ function App() {
         <Route path="/detail/:itemId" exact component={Detail} />
         <Route path="/reviewDetail" exact component={ReviewDetail} />
         <Route path="/reviewWrite/:itemId" exact component={ReviewWrite} />
-        <Route path="/reviewWrite/:itemId/:commentId" exact component={ReviewWrite} />
-        <Route path="/cart" exact component={Cart} />
+        <Route
+          path="/reviewWrite/:itemId/:commentId"
+          exact
+          component={ReviewWrite}
+        />
+        <Route path="/cart/:userId" exact component={Cart} />
         <Footer />
       </ConnectedRouter>
     </React.Fragment>

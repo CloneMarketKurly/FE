@@ -4,16 +4,21 @@ export const userIdCHK = (userId) => {
   return _reg.test(userId);
 };
 
-//비번: 10자 이상, 영문/숫자/특수문자(공백제외)만 허용. 2개이상의 조합, 동일한 숫자 3개이상 연속 사용 불가
+// 비밀번호
+// 영문, 숫자, 특수문자(공백제외)만 허용, 2개 이상 조합
 export const passwordCHK = (password) => {
-  // const _reg = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{10,}$/;
-  // return _reg.test(password) && password.search(/\s/) == -1 ? true : false;
+  let _reg = /^(?!((?:[A-Za-z]+)|(?:[~!@#$%^&*()_+=]+)|(?=[0-9]+))$)[A-Za-z\d~!@#$%^&*()_+=]{10,25}$/
+  
+  return _reg.test(password);
+}
 
-  const _reg =
-    /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{10,}$|^(?=.*\d)(?=.*[$@$!%*#?&])[\d$@$!%*#?&]{10,}$|^(?=.*[$@$!%*#?&])(?=.*[A-Za-z])[A-Za-z$@$!%*#?&]{10,}$|^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{10,}$(\w)\1\1/;
+// 동일한 문자 3개이상 연속 불가
+export const passwordCHK1 = (password) => {
+  let _reg = /(\w)\1\1/;
 
-  return _reg.test(passwordCHK);
-};
+  return _reg.test(password);
+}
+
 
 // 닉네임(이름) 형식: 한글 또는 알파벳 대소문자(a~z, A~Z)
 export const usernameCHK = (username) => {

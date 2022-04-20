@@ -148,6 +148,7 @@ const CommentTitle = styled.h2`
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0px;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const CommentInfo = styled.ul`
@@ -163,6 +164,7 @@ const CommentInfo = styled.ul`
     font-weight: 300;
     line-height: 18px;
     letter-spacing: 0px;
+    font-family: 'Noto Sans KR', sans-serif;
   }
 `;
 
@@ -170,6 +172,7 @@ const CommentTable = styled.div`
   margin-top: 15px;
   border-top: 2px solid #522772;
   border-bottom: 1px solid #522772;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const TableInfo = styled.div`
@@ -207,6 +210,7 @@ const ReviewButton = styled.button`
   font-size: 13px;
   font-weight: 400;
   line-height: 30px;
+  font-family: 'Noto Sans KR', sans-serif;
   color: #fff;
   background-color: #795b8f;
   border: 1px solid #5f0080;

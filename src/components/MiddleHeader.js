@@ -37,6 +37,7 @@ const Wrap = styled.div`
     background-color: #FAFAFA;
     color: #666666;
     font-size: 16px;
+    font-family: 'Noto Sans KR', sans-serif;
   }
 
   & div:hover {

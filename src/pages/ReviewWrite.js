@@ -53,13 +53,18 @@ const ReviewWrite = () => {
 
   // 추가하기 액션
   const addReview = () => {
+    const userId = getCookie("userId")
+    let file = fileInput.current.files[0];
+    console.log(file)
     if(title === "" || comment === "") {
       window.alert("내용을 모두 작성해주세요.")
       return;
     }
-    const userId = getCookie("userId")
-    let file = fileInput.current.files[0];
 
+    if(file === null) {
+      window.alert("사진을 추가해주세요.")
+      return;
+    }
     // 리뷰를 추가할 때 addReviewAc로 정보를 넘긴다.
     dispatch(reviewActions.addReviewAC({
         information: { userId: userId, title: title, comment: comment },
@@ -74,7 +79,10 @@ const ReviewWrite = () => {
   const editReview = () => {
     const userId = getCookie("userId")
     let file = fileInput.current.files[0];
-
+    if (title === "" || comment === "") {
+      window.alert("내용을 모두 작성해주세요.")
+      return;
+    }
     // 리뷰를 수정할 때 editReviewAC로 정보를 넘긴다.
     dispatch(reviewActions.editReviewAC({
       information: { userId: userId, title: title, comment: comment },
@@ -211,6 +219,7 @@ const ReviewTitle = styled.div`
   letter-spacing: -0.5px;
   display: flex;
   margin-left: 28px;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const TitleWrap = styled.div`
@@ -218,10 +227,12 @@ const TitleWrap = styled.div`
   display: flex;
   align-items: center;
   align-content: center;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const WriteWrap = styled.div`
   width: 820px;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const Info = styled.span`
@@ -279,6 +290,7 @@ const ProductDesc = styled.div`
   color: #000;
   line-height: 24px;
   font-weight: 500;
+  font-family: 'Noto Sans KR', sans-serif;
   letter-spacing: 0.01em;
   /* background-color: green; */
   width: 650px;
@@ -324,6 +336,7 @@ const CommentTitle = styled.div`
   background-color: #f7f7f7;
   font-size: 12px;
   color: #666;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const CommentTitleInput = styled.input`
@@ -337,6 +350,7 @@ const CommentTitleInput = styled.input`
   line-height: 18px;
   outline: none;
   margin-top: -4px;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const CommentTextWrap = styled.div`
@@ -362,6 +376,7 @@ const CommentTextTitle = styled.div`
   color: #666;
   text-overflow: hidden;
   text-align: center;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const CommentTextInput = styled.textarea`
@@ -376,6 +391,7 @@ const CommentTextInput = styled.textarea`
   outline: none;
   margin-top: 7px;
   margin-bottom: 100px;
+  font-family: 'Noto Sans KR', sans-serif;
 
   resize: none;
 `;
@@ -424,6 +440,7 @@ const PhotoDesc = styled.div`
   font-size: 12px;
   text-align: center;
   word-break: inherit;
+  font-family: 'Noto Sans KR', sans-serif;
   color: #666;
   line-height: 18px;
   outline: none;
@@ -493,6 +510,7 @@ const Issue = styled.p`
   display: flex;
   margin-top: 20px;
   color: #949296;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const IssueSpan = styled.span`
@@ -515,6 +533,7 @@ const Button = styled.button`
   justify-content: center;
   overflow: hidden;
   text-align: center;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const CommentContainer = styled.div`

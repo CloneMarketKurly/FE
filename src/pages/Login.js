@@ -3,9 +3,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Text } from "../elements/Index";
 import styled from "styled-components";
-
 import { actionCreators } from "../redux/modules/user";
-import { getCookie, setCookie, deleteCookie } from "../shared/Cookie";
 
 const Login = () => {
   const history = useHistory();
@@ -31,16 +29,7 @@ const Login = () => {
   return (
     <React.Fragment>
       <LoginWrap>
-        <Text
-          bold
-          margin="70px auto 34px"
-          size="22px"
-          width="100%"
-          center="center"
-        >
-          로그인
-        </Text>
-
+        <Title>로그인</Title>
         <LoginInput placeholder="아이디를 입력해주세요" onChange={loginId} />
         <LoginInput
           placeholder="비밀번호를 입력해주세요"
@@ -108,10 +97,17 @@ const Login = () => {
   );
 };
 
+const Title = styled.h3`
+  font-size: 28px;
+  text-align: center;
+  margin: 40px 0px;
+`;
+
 const LoginWrap = styled.div`
   margin: 0px auto 100px 0px;
   justify-content: center;
   text-align: center;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const Check = styled.input`
@@ -144,6 +140,7 @@ const ButtonLogin = styled.button`
   display: block;
   overflow: hidden;
   text-align: center;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const ButtonSignup = styled.button`
@@ -157,6 +154,7 @@ const ButtonSignup = styled.button`
   display: block;
   overflow: hidden;
   text-align: center;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 export default Login;

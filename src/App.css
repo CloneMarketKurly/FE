@@ -36,3 +36,43 @@
     transform: rotate(360deg);
   }
 }
+
+.show-menu{
+  width: 250px;
+  height: 500px;
+  position: absolute;
+  top: 200px;
+  left: -20px;
+  /* transition: 1s; */
+  z-index: 2;
+  background-color: white;
+  border-radius: 5px;
+  }
+
+.show-menu > div {
+  border-top: 1px solid #EEEEEE;
+  border-radius: 5px;
+  margin-bottom: 2px;
+  font-family: 'Noto Sans KR', sans-serif;
+  padding: 10px;
+
+}
+
+.hide-menu{
+  width: 376px;
+  height: 500px;
+  position: absolute;
+  top: 200px;
+  left: -500px;
+  /* transition: 1s; */
+  z-index: 2;
+  background-color: white;
+}
+
+.hide-menu > div {
+  border-top: 1px solid #EEEEEE;
+  border-radius: 5px;
+  margin-bottom: 2px;
+  font-family: 'Noto Sans KR', sans-serif;
+  padding: 10px;
+}

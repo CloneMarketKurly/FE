@@ -1,27 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { Text } from "../elements/Index";
 import { actionCreators } from "../redux/modules/user";
-import { userIdCHK, passwordCHK, usernameCHK } from "../shared/Common";
+import { userIdCHK, passwordCHK, passwordCHK1 } from "../shared/Common";
 import styled from "styled-components";
 
 const Signup = () => {
   const dispatch = useDispatch();
+
   //아이디, 비밀번호, 비밀번호 확인, 이름
   const [userId, setId] = React.useState("");
   const [password, setPw] = React.useState("");
   const [passwordCheck, setPwChk] = React.useState("");
   const [userName, setUserName] = React.useState("");
-  //아이디 중복검사
-  const [userId_chk, setUserId_chk] = React.useState(false);
-  // const checkUserId = () => {
-  //   if (!checkUserId(userId)) {
-  //     alert("아이디 형식이 맞지 않습니다!");
-  //     return;
-  //   }
-  //   dispatch(actionCreators.userIdCheckDB(userId));
-  // };
 
+  // 회원가입(유효성 검사 포함)
   const signup = () => {
     if (
       userId === "" ||
@@ -32,22 +25,10 @@ const Signup = () => {
       window.alert("모두 입력해주세요!");
       return;
     }
-    // if (!userIdCHK(userId)) {
-    //   window.alert("아이디가 맞지 않습니다!");
-    //   return;
-    // }
-    // if (!passwordCHK(password)) {
-    //   window.alert("비밀번호 형식이 맞지 않습니다!");
-    //   return;
-    // }
-    // if (password !== passwordCheck) {
-    //   window.alert("비밀번호와 비밀번호 확인이 일치하지 않습니다!");
-    //   return;
-    // }
-    // if (!usernameCHK(userName)) {
-    //   window.alert("이름 형식이 맞지 않습니다!");
-    //   return;
-    // }
+    if ((!userIdCHK(userId)) || (!passwordCHK(password)) || (passwordCHK1(password)) || (password !== passwordCheck)) {
+      window.alert("회원가입 조건을 다시한번 확인해주세요.")
+      return;
+    }
     dispatch(
       actionCreators.signUpDB({
         userId: userId,
@@ -98,42 +79,26 @@ const Signup = () => {
                   height: "15px",
                 }}
               />
-              <button
-                style={{
-                  fontWeight: "bold",
-                  size: "14px",
-                  backgroundColor: "#ffffff",
-                  color: "#5f0080",
-                  width: "120px",
-                  height: "48px",
-                  padding: "6px ",
-                  margin: "0 0 5px 8px",
-                  borderRadius: "3px",
-                  paddingTop: "10px",
-                  paddingBottom: "5px",
-                  border: "1px solid #8c8c8c",
-                }}
-                onClick={() => {
-                  window.alert("중복아니쥬?");
-                }}
-              >
-                중복확인
-              </button>
             </td>
-            {userId !== "" && !userIdCHK(userId) && (
+
+            {/* 아이디 유효성검사 */}
+            { userId.length < 1 ?  
+              null
+              :
+              (!userIdCHK(userId))
+              ?
               <InfoUl>
                 <li style={{ color: "red" }}>
                   6자 이상의 영문 혹은 영문과 숫자를 조합
                 </li>
-                <li> 아이디 중복확인</li>
               </InfoUl>
-            )}
-            {userId !== "" && userIdCHK(userId) && (
-              <InfoUl className="checkId" userId_chk={userId_chk}>
-                <li>6자 이상의 영문 혹은 영문과 숫자를 조합</li>
-                <li> 아이디 중복확인</li>
+              :
+              <InfoUl>
+                <li style={{ color: "green" }}>
+                  6자 이상의 영문 혹은 영문과 숫자를 조합
+                </li>
               </InfoUl>
-            )}
+            }
           </tr>
           <tr>
             <td>
@@ -150,25 +115,33 @@ const Signup = () => {
                 }}
               />
             </td>
-            {password !== "" && !passwordCHK(password) && (
+
+            {/* 비밀번호 유효성 검사 */}
+            { password.length < 1
+              ?
+              null
+              :
+              (!(passwordCHK(password) && !passwordCHK1(password)) ) ?
               <InfoUl className="checkPw">
                 <li style={{ color: "red" }}> 10글자 이상 입력</li>
                 <li style={{ color: "red" }}>
                   영문/숫자/특수문자(공백 제외)만 허용, 2개 이상의 조합
                 </li>
                 <li style={{ color: "red" }}>
-                  {" "}
                   동일한 숫자 3개 이상 연속 사용 불가
                 </li>
               </InfoUl>
-            )}
-            {password !== "" && passwordCHK(password) && (
+              :
               <InfoUl className="checkPw">
-                <li> 10글자 이상 입력</li>
-                <li>영문/숫자/특수문자(공백 제외)만 허용, 2개 이상의 조합</li>
-                <li>동일한 숫자 3개 이상 연속 사용 불가</li>
-              </InfoUl>
-            )}
+              <li style={{ color: "green" }}> 10글자 이상 입력</li>
+              <li style={{ color: "green" }}>
+                영문/숫자/특수문자(공백 제외)만 허용, 2개 이상의 조합
+              </li>
+              <li style={{ color: "green" }}>
+                동일한 숫자 3개 이상 연속 사용 불가
+              </li>
+            </InfoUl>
+            }
           </tr>
           <tr>
             <td>
@@ -185,16 +158,21 @@ const Signup = () => {
                 }}
               />
             </td>
-            {password !== "" && !passwordCHK(passwordCheck) && (
+
+            {/* 비밀번호와 비밀번호 체크 비교 */}
+            { passwordCheck.length < 1 ?  
+              null
+              :
+              (password !== passwordCheck)
+              ?
               <InfoUl style={{ color: "red" }}>
                 <li>동일한 비밀번호를 입력해주세요.</li>
               </InfoUl>
-            )}
-            {password !== "" && passwordCHK(passwordCheck) && (
-              <InfoUl>
+              :
+              <InfoUl style={{ color: "green" }}>
                 <li>동일한 비밀번호를 입력해주세요.</li>
               </InfoUl>
-            )}
+            }
           </tr>
           <tr>
             <td>
@@ -241,6 +219,7 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   padding: 5px 0px 120px 0px;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const Title = styled.h3`

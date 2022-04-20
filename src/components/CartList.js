@@ -1,123 +1,143 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Grid, Text } from "../elements/Index";
-
+import { useHistory } from "react-router-dom";
 import Modal from "./Address";
-import DetailItem from "../pages/Detail";
-// import { history } from "redux/configStore";
-import { useHistory } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators } from "../redux/modules/cart";
 import CartListProduct from "./CartListProduct";
-// import cart from "redux/modules/cart";
 
 const CartList = (props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   React.useEffect(() => {
     dispatch(actionCreators.getCartDB());
   }, []);
-  //주문한 내용 장바구니애 겟헤오기
+  //주문한 내용 장바구니에 겟헤오기
   const item_list = useSelector((state) => state.cart.item.buyItemList);
   console.log(item_list);
 
-  //다음 주소 창 띄우는 모달
   const [modal, setModal] = useState(false);
-  const 주소 = localStorage.getItem("address");
-  return (
-    <React.Fragment>
-      <Grid margin="0 auto" width="1035px" borderBottom="1px solid #f2f2f2">
-        <Grid flex_center padding="55px 0 46px" is_flex>
-          <Text bold size="28px">
-            장바구니
-          </Text>
-        </Grid>
+  const [address, setAddress] = useState("검색하고 배송유형 확인하자!");
+  const [price, setPrice] = useState("");
 
-        <Grid align>
-          <Grid
-            width="720px"
-            borderBottom="1px solid #f2f2f2"
-            borderTop="1px solid #f2f2f2"
-          >
-            {item_list.map((p, ix) => {
-              return <CartListProduct key={ix} {...p} user={p.user} />;
+  return (
+    <>
+      <Text bold size="28px" margin="20px">
+        장바구니
+      </Text>
+      {/* 장바구니 물건 리스트 */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Grid
+          width="720px"
+          borderBottom="1px solid #f2f2f2"
+          borderTop="1px solid #f2f2f2"
+          margin="20px"
+        >
+          {item_list &&
+            item_list.map((p, ix) => {
+              return (
+                <CartListProduct
+                  key={ix}
+                  {...p}
+                  user={p.user}
+                  price={price}
+                  setPrice={setPrice}
+                />
+              );
             })}
-          </Grid>
-          <Grid width="290px">
-            <Grid
-              padding="23px 19px 20px"
-              width="100%"
-              height="200px"
-              borderBottom="1px solid #f2f2f2"
-              borderTop="1px solid #f2f2f2"
-              borderLeft="1px solid #f2f2f2"
-              borderRight="1px solid #f2f2f2"
-            >
-              <Grid flex_start height="26px">
-                <Map></Map>
-                <Text size="16px" bold>
-                  배송지
-                </Text>
-              </Grid>
-              <Text margin="0" bold size="16px">
-                {주소}
+        </Grid>
+        {/* 배송지 나오는 부분 */}
+
+        <Grid width="290px">
+          <Grid
+            padding="23px 19px 20px"
+            // width="100%"
+            // height="200px"
+            // borderBottom="1px solid #f2f2f2"
+            // borderTop="1px solid #f2f2f2"
+            // borderLeft="1px solid #f2f2f2"
+            // borderRight="1px solid #f2f2f2"
+          >
+            <Grid height="26px">
+              <Map />
+              <Text size="16px" bold>
+                배송지
               </Text>
-              <BtnAddress>
-                <Text
-                  margin="0"
-                  color="#5F0080"
-                  size="12px"
-                  bold
-                  onClick={() => {
-                    setModal(!modal);
-                  }}
-                >
-                  주소 검색
-                </Text>
-                {modal === true ? <Modal /> : null}
-              </BtnAddress>
+            </Grid>
+            <Text margin="0" bold size="16px">
+              {address}
+            </Text>
+            <BtnAddress>
+              <Text
+                margin="0"
+                color="#5F0080"
+                size="12px"
+                bold
+                onClick={() => {
+                  setModal(!modal);
+                }}
+              >
+                주소 검색
+              </Text>
+              {modal === true ? (
+                <Modal address={address} setAddress={setAddress} />
+              ) : null}
+            </BtnAddress>
+          </Grid>
+          <Grid
+            bg="#fafafa"
+            padding="9px 18px 18px 20px"
+            width="100%"
+            height="226px"
+            borderBottom="1px solid #f2f2f2"
+            borderLeft="1px solid #f2f2f2"
+            borderRight="1px solid #f2f2f2"
+          >
+            <Grid is_flex height="40px" padding="9px 0 0">
+              <Text size="16px">상품금액</Text>
+              <Text size="16px">{price}원</Text>
+            </Grid>
+            <Grid is_flex height="40px" padding="9px 0 0">
+              <Text size="16px">상품할인금액</Text>
+              <Text size="16px">0원</Text>
+            </Grid>
+            <Grid is_flex height="40px" padding="9px 0 0">
+              <Text size="16px" margin="0">
+                배송비
+              </Text>
+              <Text size="16px" margin="0">
+                +3,000원
+              </Text>
             </Grid>
             <Grid
-              bg="#fafafa"
-              padding="9px 18px 18px 20px"
-              width="100%"
-              height="226px"
-              borderBottom="1px solid #f2f2f2"
-              borderLeft="1px solid #f2f2f2"
-              borderRight="1px solid #f2f2f2"
+              is_flex
+              height="40px"
+              padding="30px 0 0"
+              margin="20px 0 0"
+              borderTop="1px solid #f2f2f2"
             >
-              <Grid is_flex height="40px" padding="9px 0 0">
-                <Text size="16px">상품금액</Text>
-                <Text size="16px">원</Text>
-              </Grid>
-              <Grid is_flex height="40px" padding="9px 0 0">
-                <Text size="16px">상품할인금액</Text>
-                <Text size="16px">0원</Text>
-              </Grid>
-              <Grid is_flex height="40px" padding="9px 0 0">
-                <Text size="16px" margin="0">
-                  배송비
-                </Text>
-                <Text size="16px" margin="0">
-                  +3,000원
-                </Text>
-              </Grid>
-              <Grid
-                is_flex
-                height="40px"
-                padding="30px 0 0"
-                margin="20px 0 0"
-                borderTop="1px solid #f2f2f2"
-              >
-                <Text size="16px">결제예정금액</Text>
-                <Text size="16px" bold>
-                  +3,000원 원
-                </Text>
-              </Grid>
+              <Text size="16px">결제예정금액</Text>
+              <Text size="16px" bold>
+                +3,000원 원
+              </Text>
             </Grid>
-            <BtnOrder>
+          </Grid>
+          <OrderBox>
+            <BtnOrder
+              onClick={() => {
+                alert("주문이 완료되었습니다!!:)");
+                history.push("/");
+              }}
+            >
               <Text bold size="16px" color="#fff">
-                배송지를 입력해주세요
+                주문하기
               </Text>
             </BtnOrder>
             <Grid padding="34px 0 0">
@@ -129,10 +149,10 @@ const CartList = (props) => {
                 - '입금확인' 이후 상태에는 고객센터로 문의해주세요.
               </Text>
             </Grid>
-          </Grid>
+          </OrderBox>
         </Grid>
-      </Grid>
-    </React.Fragment>
+      </div>
+    </>
   );
 };
 
@@ -149,7 +169,11 @@ const BtnOrder = styled.button`
   max-width: 100%;
   overflow: visible;
 `;
-
+const OrderBox = styled.div`
+  width: 285px;
+  position: relative;
+  left: 12px;
+`;
 const Map = styled.div`
   width: 24px;
   height: 24px;
@@ -173,3 +197,6 @@ const BtnAddress = styled.button`
 `;
 
 export default CartList;
+{
+  /* <Grid margin="0 auto" width="1035px" borderBottom="1px solid #f2f2f2"></Grid> */
+}

@@ -1,49 +1,67 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Grid, Text } from "../elements/Index";
-import { useParams } from "react-router-dom";
+import { actionCreators } from "../redux/modules/cart";
 
 const CartListProduct = (props) => {
   console.log(props);
-  console.log(props.user);
+  console.log(props.item);
+  console.log(props.buyItemListId);
+  const dispatch = useDispatch();
 
-  const params = useParams();
-  console.log(params);
+  //수량체크 및 가격반영
+  const [num, setNum] = useState(props.count);
+  console.log(num);
+
+  const upCount = () => {
+    setNum(num + 1);
+    const count = num;
+    const buyItemListId = props.buyItemListId;
+    dispatch(actionCreators.editItemDB(buyItemListId, count));
+  };
+  const downCount = () => {
+    setNum(num > 0 ? num - 1 : 0);
+    const count = num;
+    const buyItemListId = props.buyItemListId;
+    dispatch(actionCreators.editItemDB(buyItemListId, count));
+  };
+
+  const deleteItem = () => {
+    const buyItemListId = props.buyItemListId;
+    dispatch(actionCreators.delItemDB(buyItemListId));
+  };
+  //총합계구하기
+  const price = props.item.price;
+  const setPrice = num * price;
+
   return (
     <React.Fragment>
-      <Grid
-        is_flex
-        width="100%"
-        minHeight="128px"
-        borderTop="1px solid #949494"
-      >
+      <Grid is_flex>
         <Grid flex_start>
           <BtnCheck></BtnCheck>
-          <image src={props.item.image} />
-          <Text bold size="15px">
+          <img
+            src={props.item.image}
+            style={{ width: "60px", height: "78px" }}
+          />
+          <Text bold size="15px" margin="10px 0 10px 40px">
             {props.item.title}
           </Text>
         </Grid>
 
         <Grid flex_end>
           <SpanBox>
-            <BtnMinus onClick={() => {}}></BtnMinus>
-            <InputBox>{props.count}</InputBox>
-            <BtnPlus onClick={() => {}}></BtnPlus>
+            <BtnMinus onClick={downCount} disabled={num < 2}></BtnMinus>
+            <InputBox>{num}</InputBox>
+            <BtnPlus onClick={upCount}></BtnPlus>
           </SpanBox>
           <Text center="right" size="16px" bold width="82px">
-            {Number(props.item.price)
+            {Number(setPrice)
               .toString()
               .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             원
           </Text>
-          <Del
-          // onClick={(e) => {
-          //   e.preventDefault();
-          //   e.stopPropagation();
-          //   dispatch(cartActions.deleteProdDB(props.id));
-          // }}
-          ></Del>
+          <Del onClick={deleteItem}></Del>
         </Grid>
       </Grid>
     </React.Fragment>
@@ -138,12 +156,11 @@ const InputBox = styled.p`
   width: 28px;
   height: 20px;
   margin: 5px 0 0;
-  // margin-right: -1px;
   padding: 0;
   border: 0;
   background-color: #fff;
   font-size: 14px;
-  color: #000;
+  color: black;
   line-height: 18px;
   text-align: center;
   max-width: 100%;

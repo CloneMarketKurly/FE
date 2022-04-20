@@ -6,8 +6,8 @@ import { getCookie } from "../../shared/Cookie";
 // 액션
 const GET_CART = "GET_CART";
 const ADD_ITEM = "ADD_ITEM";
-//주소찾기
-const SET_POST = "SET_POST";
+const EDIT_ITEM = "EDIT_ITEM";
+const DEL_ITEM = "DEL_ITEM";
 
 // 초기값
 const initialState = {
@@ -17,8 +17,11 @@ const initialState = {
 // 액션 생성 함수
 const getCart = createAction(GET_CART, (item) => ({ item }));
 const addItem = createAction(ADD_ITEM, (item) => ({ item }));
-const setPost = createAction(SET_POST, (address) => ({ address }));
-
+const editItem = createAction(EDIT_ITEM, (buyItemListId, count) => ({
+  buyItemListId,
+  count,
+}));
+const delItem = createAction(DEL_ITEM, (buyItemListId) => ({ buyItemListId }));
 // 미들웨어
 // 장바구니에 아이템 받아오기
 const getCartDB = () => {
@@ -54,7 +57,6 @@ const addItemDB = (itemId, count) => {
         },
         { headers: { Authorization: `Bearer ${myToken}` } }
       )
-
       .then((res) => {
         console.log(res);
         dispatch(addItem(res.data));
@@ -68,20 +70,57 @@ const addItemDB = (itemId, count) => {
   };
 };
 
+//장바구니 수량 수정하기
+const editItemDB = (buyItemListId, count) => {
+  console.log("아이템수정미들웨어", buyItemListId, count);
+  let myToken = getCookie("Authorization");
+  return function (dispatch, getState, { history }) {
+    axios
+      .put(`http://3.37.89.93/item/details/comments/${buyItemListId}`, count, {
+        headers: { Authorization: `Bearer ${myToken}` },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log("아이템수량변경오류", error);
+      });
+  };
+};
+
+const delItemDB = (buyItemListId) => {
+  let myToken = getCookie("Authorization");
+  console.log("장바구니삭제미들웨어", buyItemListId);
+  return function (dispatch, getState, { history }) {
+    axios
+      .delete(
+        `http://3.37.89.93/item/details/comments/${buyItemListId}`,
+        {},
+        { headers: { Authorization: `Bearer ${myToken}` } }
+      )
+      .then((res) => {
+        console.log(res);
+        // dispatch(delItem(res.data))
+      })
+      .catch((error) => {
+        console.log("서버에러", error);
+      });
+  };
+};
+
 // 리듀서
 export default handleActions(
   {
     [GET_CART]: (state, action) =>
       produce(state, (draft) => {
-        console.log(action.payload);
-        console.log("안녕!!");
+        console.log("리듀서", action.payload);
         draft.item = action.payload.item;
       }),
-    [SET_POST]: (state, action) =>
+    [DEL_ITEM]: (state, action) => {
       produce(state, (draft) => {
-        console.log("주소", state);
-        draft.address = action.payload.address;
-      }),
+        console.log(action);
+      });
+    },
   },
   initialState
 );
@@ -90,9 +129,12 @@ const actionCreators = {
   // export 할 것들
   getCart,
   getCartDB,
-  setPost,
   addItemDB,
   addItem,
+  editItemDB,
+  editItem,
+  delItem,
+  delItemDB,
 };
 
 export { actionCreators };

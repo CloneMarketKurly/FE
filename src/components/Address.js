@@ -1,28 +1,34 @@
 import React from "react";
 import DaumPostcode from "react-daum-postcode";
 
-const Modal = () => {
-  const handleComplete = (data) => {
-    let fullAddress = data.address;
-    let extraAddress = "";
+const Modal = (props) => {
+  const address = props.address;
+  const setAddress = props.setAddress;
 
-    if (data.addressType === "R") {
-      if (data.bname !== "") {
-        extraAddress += data.bname;
-      }
-      if (data.buildingName !== "") {
-        extraAddress +=
-          extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
-      }
-      fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
-    }
-
-    console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
-    localStorage.setItem("address", fullAddress);
-    window.location("/");
+  const onCompletePost = (data) => {
+    console.log(data.address);
+    setAddress(data.address);
   };
 
-  return <DaumPostcode onComplete={handleComplete} />;
+  const postCodeStyle = {
+    display: "block",
+    position: "absolute",
+    top: "20%",
+    width: "400px",
+    height: "400px",
+    padding: "7px",
+    zIndex: 100,
+  };
+
+  return (
+    <>
+      <DaumPostcode
+        style={postCodeStyle}
+        // autoClose
+        onComplete={onCompletePost}
+      />
+    </>
+  );
 };
 
 export default Modal;

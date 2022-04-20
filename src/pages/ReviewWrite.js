@@ -4,62 +4,87 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 // 리덕스 관련
-import { history } from "../redux/configureStore"
 import { useDispatch, useSelector } from "react-redux";
-
+import { getCookie } from "../shared/Cookie"
 
 import { actionCreators as reviewActions } from "../redux/modules/post";
 
 const ReviewWrite = () => {
   const dispatch = useDispatch();
+
+  // 리덕스 데이터 가지고 오기(상세페이지 정보)
   const detail_post = useSelector((state) => state.post.detail_post);
-  // console.log("write 페이지", detail_post)
   const initalValue = detail_post.comments
-  // console.log("초기값", initalValue)
 
   // params의 itemId와 commentId를 가지고 온다.
   const params = useParams();
   const itemId = params.itemId;
   const commentId = params.commentId;
-  // console.log("파람스 코멘트아이디", commentId)
   
   // 수정을 알 수 있는 방법
   const is_edit = commentId ? true : false; 
-  // console.log("이즈에딧", is_edit)
 
   // 여기서 발생한 문제
   // 서버에서 받아온 제이슨 형식의 데이타 안의 commentId는 보기엔 숫자이지만 숫자형식이 아니었다.
   // 그래서 형식까지 맞춘 것을 찾으려 하니 계속 undefined가 나와서 형식 비교를 없애주니 제대로 나왔다.
   let _review = is_edit ? initalValue.find((p) => p.commentId == commentId) : null;
-  // console.log("제발 코멘트 가져와조..", _review)
+  
 
+  // 리덕스 데이터 이미지 프리뷰 가져오기
+  const preview = useSelector((state) => state.post.preview);
+  // console.log("프리뷰", preview)
 
   const [title, setTitle] = useState(_review ? _review.title : "");
   const [comment, setComment] = useState(_review ? _review.comment : "");
-  const [image, setImage] = useState("선택한 파일X")
+  const [image, setImage] = useState(_review ? _review.image : "")
   
+  // 이미지 관련
+  const fileInput = React.useRef();
+
+  // 파일 선택
+  const selectFile = (e) => {
+    const reader = new FileReader();
+    const file = fileInput.current.files[0];
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      dispatch(reviewActions.setPreview(reader.result));
+    };
+  };
+
+  // 추가하기 액션
   const addReview = () => {
     if(title === "" || comment === "") {
       window.alert("내용을 모두 작성해주세요.")
       return;
     }
-    // 리뷰를 추가할 때 addReviewAc로 itemId, title, comment를 넘긴다.
-    dispatch(reviewActions.addReviewAC(
-      itemId,
-      title,
-      comment,
-    ))
+    const userId = getCookie("userId")
+    let file = fileInput.current.files[0];
+
+    // 리뷰를 추가할 때 addReviewAc로 정보를 넘긴다.
+    dispatch(reviewActions.addReviewAC({
+        information: { userId: userId, title: title, comment: comment },
+        file,
+        itemId,
+      })
+    )
     // history.replace(`/detail/${itemId}`)
   }
 
+  // 수정하기 액션
   const editReview = () => {
-    dispatch(reviewActions.editReviewAC(
-      itemId,
-      commentId,
-      title,
-      comment,
-    ))
+    const userId = getCookie("userId")
+    let file = fileInput.current.files[0];
+
+    // 리뷰를 수정할 때 editReviewAC로 정보를 넘긴다.
+    dispatch(reviewActions.editReviewAC({
+      information: { userId: userId, title: title, comment: comment },
+        file,
+        itemId,
+        commentId,
+    })
+    )
   };
+
    return (
     <React.Fragment>
       <CommentContainer>
@@ -106,26 +131,35 @@ const ReviewWrite = () => {
             <CommentPhotoTitle style={{ height: "150px" }}>
               사진등록
             </CommentPhotoTitle>
-
-            <PhotoUpload>
-              <label>
-                <img
-                  src="https://res.kurly.com/pc/ico/1806/img_add_thumb_x2.png"
-                  style={{
-                    width: "20px",
-                    marginTop: "33px",
-                    color: "#e2e2e2",
-                  }}
-                />
-                <input type="file" />
-              </label>
-            </PhotoUpload>
-
-            <PhotoDesc>
-              구매한 상품이 아니거나 캡쳐 사진을 첨부할 경우, 통보없이 삭제 및
-              적립 헤택이 취소됩니다.
-              <CommentTitleBorder4 />
-            </PhotoDesc>
+            <PotoDivWrap>
+              <PotoDiv>
+                <PhotoUpload>
+                  <label>
+                    <img
+                      src="https://res.kurly.com/pc/ico/1806/img_add_thumb_x2.png"
+                      style={{
+                        width: "20px",
+                        marginTop: "33px",
+                        color: "#e2e2e2",
+                      }}
+                    />
+                    <input type="file"
+                      onChange={selectFile}
+                      ref={fileInput}
+                      // disabled={is_uploading}
+                    />
+                  </label>
+                </PhotoUpload>
+                <PhotoUpload1>
+                  <img style={{width: "80px", marginTop: "5px"}} src={preview ? preview : null}/>
+                </PhotoUpload1>
+              </PotoDiv>
+              <PhotoDesc>
+                구매한 상품이 아니거나 캡쳐 사진을 첨부할 경우, 통보없이 삭제 및
+                적립 헤택이 취소됩니다.
+                <CommentTitleBorder4 />
+              </PhotoDesc>
+            </PotoDivWrap>  
           </CommentPhotoWrap>
           <div
             className="detail-image"
@@ -347,10 +381,21 @@ const CommentTextInput = styled.textarea`
 `;
 
 const CommentPhotoWrap = styled.div`
+  /* background-color: blue; */
   display: flex;
   justify-content: flex-start;
   align-items: center;
   margin-top: -133px;
+
+  // 수정
+  /* padding-left: 20px; */
+`;
+
+const PotoDivWrap = styled.div`
+  /* background-color: pink; */
+  display: flex;
+  flex-direction: column;
+  // 핑크
 `;
 
 const CommentPhotoTitle = styled.div`
@@ -359,7 +404,8 @@ const CommentPhotoTitle = styled.div`
   align-items: center;
   margin-top: 41px;
   padding: 0 20 222px;
-  width: 153px;
+  // 수정
+  width: 150px;
   height: 100%;
   border-top: 1px solid #dddfe1;
   border-bottom: 1px solid #dddfe1;
@@ -371,8 +417,9 @@ const CommentPhotoTitle = styled.div`
 `;
 
 const PhotoDesc = styled.div`
+  /* background-color: yellow; */
   display: flex;
-  height: 60px;
+  height: 20px;
   padding: 0 10px;
   font-size: 12px;
   text-align: center;
@@ -380,12 +427,36 @@ const PhotoDesc = styled.div`
   color: #666;
   line-height: 18px;
   outline: none;
-  margin-top: 140px;
+  /* margin-top: 140px; */
   margin-bottom: -60px;
   margin-left: 9px;
 `;
 
+const PotoDiv = styled.div`
+  /* background-color: green; */
+  display: flex;
+  flex-direction: row;
+  margin: -42px 0px 0px 10px;
+`
+const PhotoUpload1 = styled.div`
+  /* background-color: yellow; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 80px;
+  height: 80px;
+  margin: 10px 0;
+  border: none;
+  margin: 10px;
+  margin-top: 40px;
+  padding-bottom: 10px;
+  display: block;
+`;
+
 const PhotoUpload = styled.div`
+  /* background-color: yellow; */
   text-align: center;
   width: 80px;
   height: 80px;

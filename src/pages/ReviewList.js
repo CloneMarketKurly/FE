@@ -22,7 +22,7 @@ const ReviewList = (props) => {
 
   return (
     <>
-      <CommentListWrap>
+      <CommentListWrap id="1">
         <CommentTitle>PRODUCT REVIEW</CommentTitle>
         <CommentInfo>
           <li>

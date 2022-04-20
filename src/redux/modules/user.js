@@ -15,7 +15,7 @@ const GET_USER = "GET_USER";
 const initialState = {
   userInfo: {
     userId: "",
-    password: "",
+    userName: "",
   },
   is_login: false,
 };
@@ -49,6 +49,7 @@ const signUpDB = (payload) => {
       });
   };
 };
+
 const loginDB = (userId, password) => {
   console.log(userId, password);
 
@@ -138,9 +139,9 @@ export default handleActions(
   {
     [LOG_IN]: (state, action) =>
       produce(state, (draft) => {
-        console.log(state, action.payload);
+        console.log("유저정보" ,state, action.payload);
         setCookie("is_login", "success");
-        draft.userInfo = action.payload.user;
+        draft.user = action.payload.user;
         draft.is_login = true;
       }),
     [LOG_OUT]: (state, action) =>

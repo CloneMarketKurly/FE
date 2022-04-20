@@ -4,12 +4,15 @@ import { Grid, Text } from "../elements/Index";
 import { BsList, BsCart2, BsHeart, BsGeoAlt } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
 import { getCookie } from "../shared/Cookie";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../redux/modules/user";
 
 const Header = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const _user = useSelector((state) => state.user.user);
+
+  console.log(_user)
 
   const is_login = getCookie("is_login");
   const is_token = getCookie("Authorization");

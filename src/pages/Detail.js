@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import ReviewList from "./ReviewList";
+import MiddleHeader from "../components/MiddleHeader";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { actionCreators } from "../redux/modules/cart";
 import { useDispatch, useSelector } from "react-redux";
@@ -142,9 +143,8 @@ const DetailItem = (props) => {
             fontSize: "30px",
           }}
         >
-          중간 미들 헤더 들어갈 자리
+        <MiddleHeader/>
         </div>
-
         <div
           style={{
             display: "flex",

@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Grid, Text } from "../elements/Index";
+
+import Modal from "./Address";
 import DetailItem from "../pages/Detail";
 // import { history } from "redux/configStore";
 // import { useHistory } from "react-router";
@@ -16,7 +18,8 @@ const CartList = (props) => {
   // React.useEffect(() => {
   //     dispatch(actionCreators.getItemDB())
   // }, [])
-
+  const [modal, setModal] = useState(false);
+  const 주소 = localStorage.getItem("address");
   return (
     <React.Fragment>
       <Grid margin="0 auto" width="1035px" borderBottom="1px solid #f2f2f2">
@@ -56,17 +59,17 @@ const CartList = (props) => {
                   배송지
                 </Text>
               </Grid>
-              <Text
+              {/* <Text
                 padding="11px 0 0"
                 margin="0 0 5px 0"
                 bold
                 size="16px"
                 color="#5F0080"
               >
-                <span>사랑시 고백구 행복동</span>
-              </Text>
+                <span>배송지를 입력하고</span>
+              </Text> */}
               <Text margin="0" bold size="16px">
-                배송유형을 확인해 보세요!
+                {주소}
               </Text>
               <BtnAddress>
                 <Text
@@ -75,11 +78,12 @@ const CartList = (props) => {
                   size="12px"
                   bold
                   onClick={() => {
-                    window.alert("주소를 검색하시겠어요..?");
+                    setModal(!modal);
                   }}
                 >
                   주소 검색
                 </Text>
+                {modal === true ? <Modal /> : null}
               </BtnAddress>
             </Grid>
             <Grid

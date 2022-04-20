@@ -91,43 +91,44 @@ const loginDB = (userId, password) => {
   };
 };
 // 아이디 중복체크
-const dupCheckIdDB = (userId) => {
-  return function (dispatch, getState, { history }) {
-    console.log("중복체크한다!", userId);
-    try {
-      axios.post("", { userId: userId }).then(function (res) {
-        if (res.data == false) {
-          return window.alert("사용가능한 아이디입니다.");
-        } else {
-          window.alert("중복된 아이디가 있습니다.");
-        }
-      });
-    } catch (err) {
-      console.log(err);
-      window.alert("다시 시도해 주세요.");
-    }
-  };
-};
+// const dupCheckIdDB = (userId) => {
+//   return function (dispatch, getState, { history }) {
+//     console.log("중복체크한다!", userId);
+//     try {
+//       axios.post("", { userId: userId }).then(function (res) {
+//         if (res.data == false) {
+//           return window.alert("사용가능한 아이디입니다.");
+//         } else {
+//           window.alert("중복된 아이디가 있습니다.");
+//         }
+//       });
+//     } catch (err) {
+//       console.log(err);
+//       window.alert("다시 시도해 주세요.");
+//     }
+//   };
+// };
 //로그인 유지
-const loginCheckDB = () => {
-  return function (dispatch, getState, { history }) {
-    const userId = getCookie("userId");
-    console.log(userId);
-    const tokenCheck = getCookie("Authorization");
-    console.log(tokenCheck);
-    if (tokenCheck) {
-      dispatch(logIn(userId));
-    } else {
-      console.log("로그아웃할거야");
-      dispatch(logOut());
-    }
-  };
-};
+// const loginCheckDB = () => {
+//   return function (dispatch, getState, { history }) {
+//     const userId = getCookie("userId");
+//     console.log(userId);
+//     const tokenCheck = getCookie("Authorization");
+//     console.log(tokenCheck);
+//     if (tokenCheck) {
+//       dispatch(logIn(userId));
+//     } else {
+//       console.log("로그아웃할거야");
+//       dispatch(logOut());
+//     }
+//   };
+// };
 const logoutDB = () => {
   return function (dispatch, getState, { history }) {
     deleteCookie("is_login");
     deleteCookie("Authorization");
     deleteCookie("userId");
+    deleteCookie("userName");
     dispatch(logOut());
     history.replace("/");
   };
@@ -165,8 +166,8 @@ const actionCreators = {
   signUpDB,
   loginDB,
   logoutDB,
-  loginCheckDB,
-  dupCheckIdDB,
+  // loginCheckDB,
+  // dupCheckIdDB,
 };
 
 export { actionCreators };

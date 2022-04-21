@@ -39,7 +39,7 @@
 
 .show-menu{
   width: 250px;
-  height: 500px;
+  height: 530px;
   position: absolute;
   top: 200px;
   left: -20px;
@@ -51,16 +51,25 @@
 
 .show-menu > div {
   border-top: 1px solid #EEEEEE;
-  border-radius: 5px;
+  /* border-radius: 5px; */
   margin-bottom: 2px;
   font-family: 'Noto Sans KR', sans-serif;
   padding: 10px;
+}
 
+.show-menu > div:hover {
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+  background-color: white;
+  /* border-radius: 5px; */
+  margin-bottom: 2px;
+  font-family: 'Noto Sans KR', sans-serif;
+  padding: 10px;
 }
 
 .hide-menu{
   width: 376px;
-  height: 500px;
+  height: 535px;
   position: absolute;
   top: 200px;
   left: -500px;

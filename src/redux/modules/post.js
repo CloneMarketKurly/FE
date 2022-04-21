@@ -223,15 +223,10 @@ export default handleActions(
     //   }),
     [HELP_REVIEW]: (state, action) =>
       produce(state, (draft) => {
+        console.log("헬프리뷰", state)
         console.log(action.payload.commentId)
         draft.detail_post = action.payload.commentId
       }),
-    // [UPLOAD_IMG]: (state, action) =>
-    //   produce(state, (draft) => {
-    //     draft.imageUrl = action.payload.imageUrl;
-    //     draft.uploading = false;
-    //     console.log(state, action);
-    // }),
     [SET_PREVIEW]: (state, action) =>
       produce(state, (draft) => {
         draft.preview = action.payload.preview;

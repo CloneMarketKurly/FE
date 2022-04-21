@@ -7,11 +7,13 @@ import { actionCreators as postActions } from "../redux/modules/post";
 import { actionCreators } from "../redux/modules/cart";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { getCookie } from "../shared/Cookie";
 
 const DetailItem = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const params = useParams();
+  const is_token = getCookie("Authorization");
 
   // itemId는 useParams를 이용하여 Url에서 떼어온 값
   const itemId = params.itemId;
@@ -126,12 +128,24 @@ const DetailItem = (props) => {
             <span className="won">원</span>
           </div>
         </Total>
-
-        <BtnWrap>
-          <button className="btn" onClick={addItem}>
-            장바구니 담기
-          </button>
-        </BtnWrap>
+        {is_token ? (
+          <BtnWrap>
+            <button className="btn" onClick={addItem}>
+              장바구니 담기
+            </button>
+          </BtnWrap>
+        ) : (
+          <BtnWrap>
+            <button
+              className="btn"
+              onClick={() => {
+                alert("회원만 가능합니다");
+              }}
+            >
+              장바구니 담기
+            </button>
+          </BtnWrap>
+        )}
 
         <div
           style={{
@@ -143,7 +157,7 @@ const DetailItem = (props) => {
             fontSize: "30px",
           }}
         >
-        <MiddleHeader/>
+          <MiddleHeader />
         </div>
         <div
           style={{

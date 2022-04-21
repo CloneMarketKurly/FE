@@ -76,34 +76,43 @@ const editItemDB = (buyItemListId, count) => {
   let myToken = getCookie("Authorization");
   return function (dispatch, getState, { history }) {
     axios
-      .put(`http://3.37.89.93/item/details/comments/${buyItemListId}`, count, {
-        headers: { Authorization: `Bearer ${myToken}` },
-      })
+      .put(
+        `http://3.37.89.93/item/basketList/${buyItemListId}`,
+        { count },
+        {
+          headers: { Authorization: `Bearer ${myToken}` },
+        }
+      )
       .then((res) => {
-        console.log(res);
+        console.log(res.data.buyItemList);
+        dispatch(editItem(res.data.buyItemList));
       })
       .catch((error) => {
         console.log("아이템수량변경오류", error);
       });
   };
 };
-
-const delItemDB = (buyItemListId) => {
+//장바구니에서 물품 삭제
+const delItemDB = (buyItemListId, cartList) => {
   let myToken = getCookie("Authorization");
-  console.log("장바구니삭제미들웨어", buyItemListId);
+  console.log("장바구니삭제미들웨어", buyItemListId, cartList);
   return function (dispatch, getState, { history }) {
     axios
       .delete(
-        `http://3.37.89.93/item/details/comments/${buyItemListId}`,
-        {},
-        { headers: { Authorization: `Bearer ${myToken}` } }
+        `http://3.37.89.93/item/basketList/${buyItemListId}`,
+        { headers: { Authorization: `Bearer ${myToken}` } },
+        {}
       )
       .then((res) => {
         console.log(res);
-        // dispatch(delItem(res.data))
+        // const id = cartList.findIndex((c) => {
+        //   return parseInt(c.buyItemListId) === parseInt(buyItemListId);
+        // });
+        // console.log(id);
+        dispatch(delItem(buyItemListId));
       })
       .catch((error) => {
-        console.log("서버에러", error);
+        console.log("장바구니 삭제에러", error);
       });
   };
 };
@@ -116,9 +125,18 @@ export default handleActions(
         console.log("리듀서", action.payload);
         draft.item = action.payload.item;
       }),
-    [DEL_ITEM]: (state, action) => {
+    [DEL_ITEM]: (state, action) =>
       produce(state, (draft) => {
-        console.log(action);
+        console.log("장바구니 삭제 리듀서", state, action);
+        draft.item.buyItemList = draft.item.buyItemList.filter(
+          (p) => p.buyItemListId !== action.payload.buyItemListId
+        );
+      }),
+    [EDIT_ITEM]: (state, action) => {
+      produce(state, (draft) => {
+        console.log("state", state);
+        console.log(action.payload.buyItemListId);
+        draft.item = action.payload.buyItemListId;
       });
     },
   },

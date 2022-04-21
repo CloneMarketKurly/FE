@@ -29,7 +29,8 @@ const CartListProduct = (props) => {
 
   const deleteItem = () => {
     const buyItemListId = props.buyItemListId;
-    dispatch(actionCreators.delItemDB(buyItemListId));
+    const cartList = props;
+    dispatch(actionCreators.delItemDB(buyItemListId, cartList));
   };
   //총합계구하기
   const price = props.item.price;

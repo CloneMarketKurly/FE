@@ -18,12 +18,31 @@ const CartList = (props) => {
   const item_list = useSelector((state) => state.cart.item.buyItemList);
   console.log(item_list);
 
+  const 가격 = [];
+  // for (let i = 0; i < item_list.length; i++) {
+  //   console.log(item_list[i].item.price);
+  //   가격.push(item_list[i].item.price);
+  // }
+  // console.log(가격);
+
+  //for문과 같은 형태의 map을 돌렸음_이유는 useSelector를 실행 전 for문이 먼저 돌아가서 &&연산자를 활용하여 그 문제점 해결
+  item_list &&
+    item_list.map((p, ix) => {
+      가격.push(p.item.price);
+    });
+  console.log(가격);
+
+  const sum = 가격.reduce((acc, cur, i) => {
+    return acc + cur;
+  }, 0);
+  console.log(sum);
+
   const [modal, setModal] = useState(false);
-  const [address, setAddress] = useState("검색하고 배송유형 확인하자!");
+  const [address, setAddress] = useState("입력 후 배송 유형을 확인해주세요!");
   const [price, setPrice] = useState("");
 
   return (
-    <>
+    <Wrap>
       <Text bold size="28px" margin="20px">
         장바구니
       </Text>
@@ -102,7 +121,12 @@ const CartList = (props) => {
           >
             <Grid is_flex height="40px" padding="9px 0 0">
               <Text size="16px">상품금액</Text>
-              <Text size="16px">{price}원</Text>
+              <Text size="16px">
+                {Number(sum)
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                원
+              </Text>
             </Grid>
             <Grid is_flex height="40px" padding="9px 0 0">
               <Text size="16px">상품할인금액</Text>
@@ -125,7 +149,10 @@ const CartList = (props) => {
             >
               <Text size="16px">결제예정금액</Text>
               <Text size="16px" bold>
-                +3,000원 원
+                {Number(sum + 3000)
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                원
               </Text>
             </Grid>
           </Grid>
@@ -152,9 +179,13 @@ const CartList = (props) => {
           </OrderBox>
         </Grid>
       </div>
-    </>
+    </Wrap>
   );
 };
+
+const Wrap = styled.div`
+  font-family: "Noto Sans KR", sans-serif;
+`;
 
 const BtnOrder = styled.button`
   width: 100%;
@@ -168,11 +199,13 @@ const BtnOrder = styled.button`
   cursor: pointer;
   max-width: 100%;
   overflow: visible;
+  font-family: "Noto Sans KR", sans-serif;
 `;
 const OrderBox = styled.div`
   width: 285px;
   position: relative;
   left: 12px;
+  font-family: "Noto Sans KR", sans-serif;
 `;
 const Map = styled.div`
   width: 24px;
@@ -182,6 +215,7 @@ const Map = styled.div`
   background-image: url("https://res.kurly.com/pc/ico/2008/ico_delivery_setting.svg?ver=1");
   background-size: cover;
   background-position: center;
+  font-family: "Noto Sans KR", sans-serif;
 `;
 
 const BtnAddress = styled.button`
@@ -194,6 +228,7 @@ const BtnAddress = styled.button`
   border: 1px solid #5f0080;
   border-radius: 4px;
   cursor: pointer;
+  font-family: "Noto Sans KR", sans-serif;
 `;
 
 export default CartList;

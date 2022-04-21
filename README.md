@@ -1,5 +1,4 @@
-# 마켓컬리 클론코딩
-## 프로젝트 소개
+## 마켓컬리 클론코딩
 
 ![](../../Desktop/Desktop_image/springlogo.png)
 ## MarketKurly clone Project - BackEnd
@@ -32,7 +31,7 @@
 <a href="https://github.com/hyun-woong" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Spring&message=심현웅 &color=08CE5D&style=for-the-badge&>"/></a>
 
 
-**[(Front-end github)](https://github.com/CloneMarketKurly/BE)**
+**[(Back-end github)](https://github.com/CloneMarketKurly/BE)**
 
 ## 📜 기술스택
 <div>

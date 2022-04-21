@@ -55,11 +55,11 @@ const Header = () => {
             </BodySt>
             <ImgSt>
               <div>
-                <img
+                <img style={{width : "103px"}}
                   onClick={() => {
                     history.push("/");
                   }}
-                  src="/img/kurly.png"
+                  src="https://res.kurly.com/images/marketkurly/logo/logo_x2.png"
                 />
               </div>
             </ImgSt>
@@ -134,11 +134,11 @@ const Header = () => {
           </BodySt>
           <ImgSt>
             <div>
-              <img
+              <img style={{width : "103px"}}
                 onClick={() => {
                   history.push("/");
                 }}
-                src="/img/kurly.png"
+                src="https://res.kurly.com/images/marketkurly/logo/logo_x2.png"
               />
             </div>
           </ImgSt>

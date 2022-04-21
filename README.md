@@ -1,7 +1,7 @@
 ## 마켓컬리 클론코딩
 
 ![](../../Desktop/Desktop_image/springlogo.png)
-## MarketKurly clone Project - BackEnd
+## MarketKurly clone Project - FrontEnd
 <div align="center">
 <img width="940" alt="스크린샷 2022-04-20 오후 11 17 02" src="https://user-images.githubusercontent.com/98807506/164251304-7d922bbe-4bbd-4370-ba77-e3df065655ab.png">
  </div>

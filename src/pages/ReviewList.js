@@ -2,11 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import ReviewDetail from "./ReviewDetail";
+import { getCookie } from "../shared/Cookie";
 
 // 리덕스관련
 import { useSelector } from "react-redux";
 
 const ReviewList = (props) => {
+  const is_token = getCookie("Authorization") 
   const history = useHistory();
 
   // itemId는 Detail 페이지에서 넘겨받은 props의 itemId
@@ -18,6 +20,15 @@ const ReviewList = (props) => {
   // 서버에서 댓글 정보를 보낼 때 상세페이지 로드에 같이 담아 보내줬기 때문에 detail_post에서 꺼내쓴다.
   // review는 리뷰정보들
   const review = detail_post.comments
+
+  const wirte = () => {
+    if (!is_token) {
+      window.alert("상품후기는 상품을 구매하시고 배송완료된 회원 분만 한 달 내 작성 가능합니다.")
+      return;
+    } else {
+      history.push(`/reviewWrite/${itemId}`);
+    }
+  }
 
 
   return (
@@ -116,14 +127,7 @@ const ReviewList = (props) => {
         </CommentTable>
         <ReveiwButtonWrap>
           <ReviewButton
-            onClick={() => {
-              window.alert(
-                "상품후기는 상품을 구매하시고 배송완료된 회원 분만 한 달 내 작성 가능합니다."
-              );
-
-              // 후기 작성시 itemId 값을 가지고 후기 작성페이지로 이동
-              history.push(`/reviewWrite/${itemId}`);
-            }}
+            onClick={wirte}
           >
             후기쓰기
           </ReviewButton>
